@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+
+google-generativeai
+
+boto3
+botocore
+
+numpy
+
+python-dotenv
+
+requests
+
+pytest
+
+tiktoken
