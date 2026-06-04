@@ -1,0 +1,21 @@
+Fintech Corp offers personal loans, business loans, and credit cards.
+
+To apply for a personal loan you need:
+- Government issued photo ID
+- Last 3 months bank statements
+- Proof of income or salary slips
+- PAN card
+- Address proof
+
+Personal loan interest rates start from 10.5% per year.
+Loan amounts range from 50000 to 5000000 rupees.
+Loan tenure is 1 to 5 years.
+
+For KYC verification we require Aadhaar card and PAN card.
+KYC process takes 2 to 3 business days.
+
+Credit card eligibility requires minimum monthly income of 25000 rupees.
+Credit limit is set based on income and credit score.
+
+Customer support is available Monday to Saturday 9am to 6pm.
+Contact us at support@fintechcorp.com or call 1800-123-4567.
