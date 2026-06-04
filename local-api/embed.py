@@ -1,36 +1,41 @@
-# embed.py
-# Calls Gemini API to convert text into a vector
-
-import os
+from google import genai
 from dotenv import load_dotenv
-import google.generativeai as genai
+import os
 
 load_dotenv("../.env")
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+client = genai.Client(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
 
-MODEL = "models/text-embedding-004"
+EMBED_MODEL = "gemini-embedding-001"
 
 
-def embed_text(text):
-    result = genai.embed_content(
-        model=MODEL,
-        content=text,
-        task_type="retrieval_document"
+def embed_text(text: str):
+    response = client.models.embed_content(
+        model=EMBED_MODEL,
+        contents=text
     )
-    return result["embedding"]
+
+    return response.embeddings[0].values
 
 
-def embed_query(text):
-    result = genai.embed_content(
-        model=MODEL,
-        content=text,
-        task_type="retrieval_query"
+def embed_query(query: str):
+    response = client.models.embed_content(
+        model=EMBED_MODEL,
+        contents=query
     )
-    return result["embedding"]
+
+    return response.embeddings[0].values
 
 
 if __name__ == "__main__":
-    vector = embed_text("What is the interest rate for personal loans?")
+    sample_text = """
+    Personal loan interest rates start from 10.5% per year.
+    """
+
+    vector = embed_text(sample_text)
+
     print(f"Vector length: {len(vector)}")
-    print(f"First 5 values: {vector[:5]}")
+    print("\nFirst 10 values:")
+    print(vector[:10])
