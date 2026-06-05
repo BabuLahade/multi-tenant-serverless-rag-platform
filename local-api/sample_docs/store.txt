@@ -1,0 +1,12 @@
+ShopSmart is an ecommerce platform.
+
+Orders can be cancelled within 24 hours.
+
+Delivery takes 3 to 5 business days.
+
+Refunds are processed within 7 business days.
+
+Premium members get free shipping.
+
+Customer support:
+support@shopsmart.com
