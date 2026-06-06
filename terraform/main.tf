@@ -49,3 +49,12 @@ module "api_gateway" {
 
   crawl_lambda_name =module.lambda.crawl_lambda_name
 }
+
+module "sqs" {
+
+  source = "./modules/sqs"
+
+  environment = var.environment
+
+  project_name = var.project_name
+}

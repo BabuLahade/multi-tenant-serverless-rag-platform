@@ -91,6 +91,18 @@ resource "aws_iam_policy" "lambda_data_access" {
         ]
 
         Resource = "*"
+      } ,
+      {
+        Effect = "Allow"
+
+        Action = [
+            "sqs:SendMessage",
+            "sqs:ReceiveMessage",
+            "sqs:DeleteMessage",
+            "sqs:GetQueueAttributes"
+        ]
+
+        Resource = "*"
       }
     ]
   })
