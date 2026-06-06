@@ -12,7 +12,7 @@ resource "aws_lambda_function" "chat" {
 
   timeout = 30
 
-  memory_size = 51
+  memory_size = 512
 }
 
 resource "aws_lambda_function" "crawl" {

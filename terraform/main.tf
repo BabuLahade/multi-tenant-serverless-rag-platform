@@ -36,3 +36,16 @@ module "lambda" {
   project_name = var.project_name
   lambda_role_arn = module.iam.lambda_role_arn
 }
+
+module "api_gateway" {
+
+  source = "./modules/api_gateway"
+
+  chat_lambda_arn =module.lambda.chat_lambda_arn
+
+  chat_lambda_name = module.lambda.chat_lambda_name
+
+  crawl_lambda_arn =module.lambda.crawl_lambda_arn
+
+  crawl_lambda_name =module.lambda.crawl_lambda_name
+}
