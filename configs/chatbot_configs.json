@@ -1,0 +1,19 @@
+{
+  "fintech": {
+    "bot_name": "NovaPay Assistant",
+    "brand_color": "#2563eb",
+    "system_prompt": "You are a fintech support assistant."
+  },
+
+  "healthcare": {
+    "bot_name": "MediCare AI",
+    "brand_color": "#16a34a",
+    "system_prompt": "You are a healthcare support assistant."
+  },
+
+  "store": {
+    "bot_name": "ShopAssist",
+    "brand_color": "#f97316",
+    "system_prompt": "You are an ecommerce support assistant."
+  }
+}
