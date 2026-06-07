@@ -10,3 +10,6 @@ venv/
 node_modules/
 *.zip
 .DS_Store
+*.terraform.tfvars
+terraform/environments/dev/terraform.tfvars
+*.tfvars

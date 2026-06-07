@@ -17,3 +17,7 @@ output "chat_lambda_name" {
 output "crawl_lambda_name" {
   value = aws_lambda_function.crawl.function_name
 }
+
+output "ingest_lambda_name" {
+  value = aws_lambda_function.ingest.function_name
+}

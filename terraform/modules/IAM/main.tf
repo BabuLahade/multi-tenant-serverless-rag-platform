@@ -103,7 +103,18 @@ resource "aws_iam_policy" "lambda_data_access" {
         ]
 
         Resource = "*"
-      }
+      },
+      {
+        Effect = "Allow"
+
+        Action = [
+        "secretsmanager:GetSecretValue"
+         ]
+
+         Resource = [
+             var.secret_arn
+            ]
+        }
     ]
   })
 }
