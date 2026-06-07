@@ -90,3 +90,10 @@ module "cloudwatch" {
 
   dlq_name =module.sqs.dlq_name
 }
+
+module "github_oidc" {
+
+  source = "./modules/github_oidc"
+
+  github_repo ="BabuLahade/multi-tenant-serverless-rag-platform"
+}

@@ -9,6 +9,9 @@ resource "aws_lambda_function" "chat" {
     source_code_hash = filebase64sha256(
       "${path.root}/../lambda/packages/nova-chat.zip"
     )
+    tracing_config {
+            mode = "Active"
+    }
 
   timeout = 30
 
@@ -30,6 +33,9 @@ resource "aws_lambda_function" "crawl" {
   source_code_hash = filebase64sha256(
       "${path.root}/../lambda/packages/nova-crawl.zip"
     )
+  tracing_config {
+            mode = "Active"
+    }
 
   timeout = 60
 
@@ -51,7 +57,9 @@ resource "aws_lambda_function" "ingest" {
   source_code_hash =filebase64sha256(
       "${path.root}/../lambda/packages/nova-ingest.zip"
     )
-
+  tracing_config {
+            mode = "Active"
+    }
   timeout = 120
 
   memory_size = 1024
