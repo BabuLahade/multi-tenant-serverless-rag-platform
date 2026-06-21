@@ -7,7 +7,7 @@ dynamodb = boto3.resource(
 )
 
 table = dynamodb.Table("nova-vectors")
-
+from boto3.dynamodb.conditions import Key
 
 def save_chunk(
     client_id,
@@ -33,3 +33,14 @@ def save_chunk(
     print(
         f"Saved {client_id}:{chunk_id}"
     )
+    
+def get_chunks(client_id):
+
+    response = table.query(
+        KeyConditionExpression=
+        boto3.dynamodb.conditions.Key(
+            "client_id"
+        ).eq(client_id)
+    )
+
+    return response["Items"]
