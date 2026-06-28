@@ -12,7 +12,7 @@ Multi-tenant serverless RAG chatbot platform on AWS.
 - Phase 5 — Event-Driven Ingestion  done 
 - Phase 6 — API Gateway + Security
 - Phase 7 — Widget + Demo Websites
-- Phase 8 — Terraform + CI/CD
+- Phase 8 — Terraform + CI/CD   done
 - Phase 9 — SRE + Production Hardening
 
 ## Stack
