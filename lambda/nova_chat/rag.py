@@ -1,7 +1,7 @@
 from google import genai
 
-from retrieve import search
-from shared.secrets import get_secret
+from .retrieve import search
+from ..shared.secret_manager import get_secret
 
 
 def ask(client_id, question):

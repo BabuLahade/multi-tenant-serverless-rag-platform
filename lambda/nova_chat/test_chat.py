@@ -1,4 +1,4 @@
-from rag import ask
+from .rag import ask
 
 result = ask(
     "fintech",

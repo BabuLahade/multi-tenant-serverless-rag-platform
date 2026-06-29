@@ -1,7 +1,7 @@
 import numpy as np
 
-from shared.embed import embed_query
-from shared.vector_repository import get_chunks
+from ..shared.embed import embed_query
+from ..shared.vector_repository import get_chunks
 
 
 def cosine_similarity(a, b):
@@ -25,14 +25,19 @@ def search(client_id, query, top_k=3):
 
     for chunk in chunks:
 
+        embedding = [
+        float(x)
+        for x in chunk["embedding"]
+         ]
+
         score = cosine_similarity(
-            query_vector,
-            chunk["vector"]
+        query_vector,
+        embedding
         )
 
         results.append({
-            "text": chunk["text"],
-            "score": float(score)
+        "text": chunk["text"],
+        "score": float(score)
         })
 
     results.sort(

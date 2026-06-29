@@ -1,9 +1,9 @@
 from google import genai
 
-from secrets import get_secret
+from .secret_manager import get_secret
 
 
-EMBED_MODEL = "gemini-embedding-001"
+EMBED_MODEL = "gemini-embedding-2"
 
 
 def get_client():
