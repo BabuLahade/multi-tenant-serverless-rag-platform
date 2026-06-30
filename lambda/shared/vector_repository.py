@@ -44,3 +44,5 @@ def get_chunks(client_id):
     )
 
     return response["Items"]
+
+## code form aws folder 
