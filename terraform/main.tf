@@ -5,6 +5,8 @@ module "raw_content_bucket" {
   bucket_name = "nova-raw-content"
 
   environment = var.environment
+
+  ingest_queue_arn = module.sqs.ingest_queue_arn
 }
 
 module "dynamodb" {
@@ -97,3 +99,4 @@ module "github_oidc" {
 
   github_repo ="BabuLahade/multi-tenant-serverless-rag-platform"
 }
+

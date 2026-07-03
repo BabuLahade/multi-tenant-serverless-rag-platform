@@ -5,3 +5,7 @@ variable "bucket_name" {
 variable "environment" {
   type = string
 }
+
+variable "ingest_queue_arn" {
+  type = string
+}
