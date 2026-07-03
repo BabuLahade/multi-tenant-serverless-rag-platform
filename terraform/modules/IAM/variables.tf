@@ -25,3 +25,6 @@ variable "s3_bucket_arn" {
 variable "secret_arn" {
   type = string
 }
+variable "ingest_queue_arn" {
+  type = string
+}

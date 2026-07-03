@@ -81,16 +81,6 @@ resource "aws_iam_policy" "lambda_data_access" {
           var.s3_bucket_arn,
           "${var.s3_bucket_arn}/*"
         ]
-      },
-
-      {
-        Effect = "Allow"
-
-        Action = [
-          "secretsmanager:GetSecretValue"
-        ]
-
-        Resource = "*"
       } ,
       {
         Effect = "Allow"
@@ -102,7 +92,7 @@ resource "aws_iam_policy" "lambda_data_access" {
             "sqs:GetQueueAttributes"
         ]
 
-        Resource = "*"
+        Resource = [var.ingest_queue_arn]
       },
       {
         Effect = "Allow"

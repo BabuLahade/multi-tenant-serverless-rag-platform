@@ -28,6 +28,7 @@ module "iam" {
   sessions_table_arn = module.dynamodb.sessions_table_arn
   s3_bucket_arn =module.raw_content_bucket.bucket_arn
   secret_arn = module.secrets_manager.secret_arn
+  ingest_queue_arn = module.sqs.ingest_queue_arn
 }
 
 
