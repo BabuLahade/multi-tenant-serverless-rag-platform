@@ -1,6 +1,6 @@
-from lambda.shared.chunker import chunk_text
-from lambda.shared.embed import embed_text
-from lambda.shared.vector_repository import save_chunk
+from ..shared.chunker import chunk_text
+from ..shared.embed import embed_text
+from ..shared.vector_repository import save_chunk
 
 
 def process_document(client_id, text):
