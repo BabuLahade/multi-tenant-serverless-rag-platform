@@ -1,4 +1,4 @@
-output "queue_arn" {
+output "ingest_queue_arn" {
   value = aws_sqs_queue.ingest_queue.arn
 }
 

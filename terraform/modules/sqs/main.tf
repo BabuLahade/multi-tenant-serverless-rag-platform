@@ -1,6 +1,6 @@
 resource "aws_sqs_queue" "ingest_dlq" {
     name = "nova-ingest_queue"
-    message_retention_seconds = 1209600 # 14 days)
+    message_retention_seconds = 1209600 # 14 days 
 }
 
 resource "aws_sqs_queue" "ingest_queue" {
@@ -8,15 +8,15 @@ resource "aws_sqs_queue" "ingest_queue" {
 
     visibility_timeout_seconds = 300
 
-    redrive_allow_policy = jsonencode({
+    redrive_policy = jsonencode({
         deadLetterTargetArn = aws_sqs_queue.ingest_dlq.arn
-        maxReceiveCount = 3
+        maxReceiveCount     = 3
     })
 }
 
 resource "aws_sqs_queue_policy" "allow_s3" {
 
-  queue_url = aws_sqs_queue.ingest.id
+  queue_url = aws_sqs_queue.ingest_queue.id
 
   policy = jsonencode({
 
@@ -34,7 +34,7 @@ resource "aws_sqs_queue_policy" "allow_s3" {
 
         Action = "sqs:SendMessage"
 
-        Resource = aws_sqs_queue.ingest.arn
+        Resource = aws_sqs_queue.ingest_queue.arn
 
       }
 

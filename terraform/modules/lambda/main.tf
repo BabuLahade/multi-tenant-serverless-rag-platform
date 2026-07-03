@@ -69,7 +69,7 @@ resource "aws_lambda_event_source_mapping" "ingest" {
 
   event_source_arn = var.ingest_queue_arn
 
-  function_name = aws_lambda_function.nova_ingest.arn
+  function_name = aws_lambda_function.ingest.arn
 
   batch_size = 5
 
