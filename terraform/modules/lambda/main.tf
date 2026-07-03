@@ -64,3 +64,14 @@ resource "aws_lambda_function" "ingest" {
 
   memory_size = 1024
 }
+
+resource "aws_lambda_event_source_mapping" "ingest" {
+
+  event_source_arn = var.ingest_queue_arn
+
+  function_name = aws_lambda_function.nova_ingest.arn
+
+  batch_size = 5
+
+  enabled = true
+}

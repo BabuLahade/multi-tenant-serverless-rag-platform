@@ -38,6 +38,7 @@ module "lambda" {
   environment = var.environment
   project_name = var.project_name
   lambda_role_arn = module.iam.lambda_role_arn
+  ingest_queue_arn = module.sqs.ingest_queue_arn
   
 }
 
