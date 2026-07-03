@@ -14,30 +14,39 @@ def cosine_similarity(a, b):
         np.linalg.norm(b)
     )
 
-
 def search(client_id, query, top_k=3):
 
     query_vector = embed_query(query)
 
     chunks = get_chunks(client_id)
 
+    print("\n===== DEBUG =====")
+    print(chunks)
+    print("=================\n")
+
     results = []
 
     for chunk in chunks:
 
+        print(chunk.keys())
+
+        if "embedding" not in chunk:
+            print("Missing embedding:", chunk)
+            continue
+
         embedding = [
-        float(x)
-        for x in chunk["embedding"]
-         ]
+            float(x)
+            for x in chunk["embedding"]
+        ]
 
         score = cosine_similarity(
-        query_vector,
-        embedding
+            query_vector,
+            embedding
         )
 
         results.append({
-        "text": chunk["text"],
-        "score": float(score)
+            "text": chunk["text"],
+            "score": float(score)
         })
 
     results.sort(
