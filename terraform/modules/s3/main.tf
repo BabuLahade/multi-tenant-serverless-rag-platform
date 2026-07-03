@@ -47,3 +47,40 @@ resource "aws_s3_bucket_notification" "ingest" {
     aws_s3_bucket.rag
   ]
 }
+
+resource "aws_sqs_queue_policy" "allow_s3" {
+
+  queue_url = var.ingest_queue_url
+
+  policy = jsonencode({
+
+    Version = "2012-10-17"
+
+    Statement = [
+
+      {
+
+        Sid = "AllowS3"
+
+        Effect = "Allow"
+
+        Principal = {
+          Service = "s3.amazonaws.com"
+        }
+
+        Action = "sqs:SendMessage"
+
+        Resource = aws_sqs_queue.ingest_queue.arn
+
+        Condition = {
+          ArnEquals = {
+            "aws:SourceArn" = var.bucket_arn
+          }
+        }
+
+      }
+
+    ]
+
+  })
+}
