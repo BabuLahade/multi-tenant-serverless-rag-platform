@@ -7,6 +7,8 @@ module "raw_content_bucket" {
   environment = var.environment
 
   ingest_queue_arn = module.sqs.ingest_queue_arn
+  bucket_arn = module.sqs.ingest_queue_arn
+  ingest_queue_url = module.sqs.ingest_queue_url
 }
 
 module "dynamodb" {
