@@ -3,7 +3,7 @@ resource "aws_cloudwatch_event_rule" "weekly_crawl" {
 
     description = "Triggers the crawl lambda every week"
 
-    schedule_expression = "cron(0 2 ? * MON * )"
+    schedule_expression = "rate(7 days)"
 }
 
 resource "aws_cloudwatch_event_target" "crawl_target" {

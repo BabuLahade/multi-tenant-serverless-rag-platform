@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 resource "aws_s3_bucket" "rag" {
   bucket = var.bucket_name
   
@@ -44,43 +46,77 @@ resource "aws_s3_bucket_notification" "ingest" {
   }
 
   depends_on = [
-    aws_s3_bucket.rag
+    aws_s3_bucket.rag,
+    aws_sqs_queue_policy.allow_s3
   ]
 }
+
+# resource "aws_sqs_queue_policy" "allow_s3" {
+
+#   queue_url = var.ingest_queue_url
+
+#   policy = jsonencode({
+
+#     Version = "2012-10-17"
+
+#     Statement = [
+
+#       {
+
+#         Sid = "AllowS3"
+
+#         Effect = "Allow"
+
+#         Principal = {
+#           Service = "s3.amazonaws.com"
+#         }
+
+#         Action = "sqs:SendMessage"
+
+#         Resource = var.ingest_queue_arn
+
+#         Condition = {
+#           ArnEquals = {
+#             "aws:SourceArn" = var.bucket_arn
+#           }
+#         }
+
+#       }
+
+#     ]
+
+#   })
+# }
 
 resource "aws_sqs_queue_policy" "allow_s3" {
 
   queue_url = var.ingest_queue_url
 
   policy = jsonencode({
-
     Version = "2012-10-17"
 
     Statement = [
-
       {
-
-        Sid = "AllowS3"
-
+        Sid    = "AllowS3"
         Effect = "Allow"
 
         Principal = {
           Service = "s3.amazonaws.com"
         }
 
-        Action = "sqs:SendMessage"
-
-        Resource = aws_sqs_queue.ingest_queue.arn
+        Action   = "sqs:SendMessage"
+        Resource = var.ingest_queue_arn
 
         Condition = {
           ArnEquals = {
-            "aws:SourceArn" = var.bucket_arn
+            "aws:SourceArn" = aws_s3_bucket.rag.arn
+          }
+
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
           }
         }
-
       }
-
     ]
-
   })
 }
