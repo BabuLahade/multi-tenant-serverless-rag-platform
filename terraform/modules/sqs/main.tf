@@ -14,31 +14,66 @@ resource "aws_sqs_queue" "ingest_queue" {
     })
 }
 
+# resource "aws_sqs_queue_policy" "allow_s3" {
+
+#   queue_url = aws_sqs_queue.ingest_queue.id
+
+#   policy = jsonencode({
+
+#     Version = "2012-10-17"
+
+#     Statement = [
+
+#       {
+
+#         Effect = "Allow"
+
+#         Principal = {
+#           Service = "s3.amazonaws.com"
+#         }
+
+#         Action = "sqs:SendMessage"
+
+#         Resource = aws_sqs_queue.ingest_queue.arn
+
+#       }
+
+#     ]
+
+#   })
+# }
+
+data "aws_caller_identity" "current" {}
+
 resource "aws_sqs_queue_policy" "allow_s3" {
 
   queue_url = aws_sqs_queue.ingest_queue.id
 
   policy = jsonencode({
-
     Version = "2012-10-17"
 
     Statement = [
-
       {
-
+        Sid    = "AllowS3"
         Effect = "Allow"
 
         Principal = {
           Service = "s3.amazonaws.com"
         }
 
-        Action = "sqs:SendMessage"
-
+        Action   = "sqs:SendMessage"
         Resource = aws_sqs_queue.ingest_queue.arn
 
+        Condition = {
+          ArnEquals = {
+            "aws:SourceArn" = "arn:aws:s3:::nova-raw-content"
+          }
+
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
       }
-
     ]
-
   })
 }
