@@ -1,0 +1,68 @@
+name : Build lambda Packages
+
+on:
+  push:
+    branches:
+      - main 
+  workflow_dispatch:
+    
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Upgrade Pip
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Build Chat Package 
+        run: |
+          mkdir -p build/chat
+          cp -r lambda/nova_chat/* build/chat/
+          cp -r lambda/shared build/chat/
+          pip install -r lambda/nova_chat/requirements.txt -t build/chat
+          cd build/chat
+          zip -r ../../lambda/packages/nova-chat.zip .
+      - name: Build Nova Ingest Package
+        run: |
+          mkdir -p build/ingest
+          cp -r lambda/nova_ingest/* build/ingest/
+
+          cp -r lambda/shared build/ingest/
+
+          pip install -r lambda/nova_ingest/requirements.txt -t build/ingest
+
+          cd build/ingest
+
+          zip -r ../../lambda/packages/nova-ingest.zip .
+      - name: Build Crawl Package
+
+        run: |
+
+          mkdir -p build/crawl
+
+          cp -r lambda/nova_crawl/* build/crawl/
+
+          cp -r lambda/shared build/crawl/
+
+          pip install -r lambda/nova_crawl/requirements.txt -t build/crawl
+
+          cd build/crawl
+
+          zip -r ../../lambda/packages/nova-crawl.zip .
+
+      - name: Upload Artifacts
+
+        uses: actions/upload-artifact@v4
+
+        with:
+
+          name: lambda-packages
+
+          path: lambda/packages/
