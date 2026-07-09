@@ -1,7 +1,7 @@
 import json
 import boto3
 
-from .processor import process_document
+from  processor import process_document
 
 s3 = boto3.client(
     "s3",
@@ -9,7 +9,7 @@ s3 = boto3.client(
 )
 
 
-def lambda_handler(event, context):
+def handler(event, context):
 
     print(json.dumps(event))
 
