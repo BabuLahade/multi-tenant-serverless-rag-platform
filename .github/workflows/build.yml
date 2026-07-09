@@ -11,9 +11,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+         role-to-assume: arn:aws:iam::882083662991:role/nova-github-actions-role
+         aws-region: ap-south-1
+
+      - name: Verify AWS Identity
+        run: |
+          aws sts get-caller-identity
 
       - name: Set up Python
         uses: actions/setup-python@v5
