@@ -84,7 +84,9 @@ jobs:
 
           cd build
           zip -r ../lambda/packages/nova-crawl.zip crawl
-
+      - name: Show package sizes
+        run: |
+          du -sh lambda/packages/*
       - name: Upload Lambda Packages
         uses: actions/upload-artifact@v4
         with:
