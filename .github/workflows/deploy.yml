@@ -1,0 +1,46 @@
+name: Deploy Infrastructure
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::882083662991:role/nova-github-actions-role
+          aws-region: ap-south-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Download Lambda Packages
+        uses: actions/download-artifact@v4
+        with:
+          name: lambda-packages
+          path: lambda/packages
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: terraform
+        env:
+          TF_VAR_gemini_api_key: ${{ secrets.TF_VAR_gemini_api_key }}
+        run: |
+          terraform apply \
+            -auto-approve \
+            -var="aws_region=ap-south-1" \
+            -var="project_name=nova-rag" \
+            -var="environment=dev"
