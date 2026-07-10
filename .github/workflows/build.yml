@@ -109,11 +109,15 @@ jobs:
         working-directory: terraform
         run: |
           terraform plan \
-            -var-file=environments/dev/terraform.tfvars
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        working-directory: terraform
-        run: |
-          terraform apply \
-            -auto-approve \
-            -var-file=environments/dev/terraform.tfvars
+            -var="aws_region=ap-south-1" \
+            -var="project_name=nova-rag" \
+            -var="environment=dev"
+      # - name: Terraform Apply
+      #   if: github.ref == 'refs/heads/main'
+      #   working-directory: terraform
+      #   run: |
+      #     terraform apply \
+              # -auto-approve \
+              # -var="aws_region=ap-south-1" \
+              # -var="project_name=nova-rag" \
+              # -var="environment=dev"
