@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 jobs:
@@ -22,10 +21,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-         role-to-assume: arn:aws:iam::882083662991:role/nova-github-actions-role
-         aws-region: ap-south-1
-
-      
+          role-to-assume: arn:aws:iam::882083662991:role/nova-github-actions-role
+          aws-region: ap-south-1
 
       - name: Verify AWS Identity
         run: |
@@ -104,7 +101,7 @@ jobs:
       - name: Terraform Validate
         working-directory: terraform
         run: terraform validate
-      
+
       - name: Terraform Plan
         working-directory: terraform
         env:
@@ -114,14 +111,67 @@ jobs:
             -var="aws_region=ap-south-1" \
             -var="project_name=nova-rag" \
             -var="environment=dev"
+
       # - name: Terraform Apply
       #   if: github.ref == 'refs/heads/main'
       #   working-directory: terraform
-      #     env:
+      #   env:
       #     TF_VAR_gemini_api_key: ${{ secrets.TF_VAR_gemini_api_key }}
-      # #   run: |
+      #   run: |
       #     terraform apply \
-              # -auto-approve \
-              # -var="aws_region=ap-south-1" \
-              # -var="project_name=nova-rag" \
-          #    # -var="environment=dev"
+      #       -auto-approve \
+      #       -var="aws_region=ap-south-1" \
+      #       -var="project_name=nova-rag" \
+      #       -var="environment=dev"
+
+  deploy:
+    name: Deploy Infrastructure
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::882083662991:role/nova-github-actions-role
+          aws-region: ap-south-1
+
+      - name: Download Lambda Packages
+        uses: actions/download-artifact@v4
+        with:
+          name: lambda-packages
+          path: lambda/packages
+
+      - name: Verify Packages
+        run: |
+          ls -R lambda/packages
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: terraform
+        env:
+          TF_VAR_gemini_api_key: ${{ secrets.TF_VAR_gemini_api_key }}
+        run: |
+          terraform apply \
+            -auto-approve \
+            -var="aws_region=ap-south-1" \
+            -var="project_name=nova-rag" \
+            -var="environment=dev"
