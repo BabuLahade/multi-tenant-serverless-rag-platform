@@ -25,29 +25,7 @@ jobs:
          role-to-assume: arn:aws:iam::882083662991:role/nova-github-actions-role
          aws-region: ap-south-1
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Init
-        working-directory: terraform
-        run: terraform init
-
-      - name: Terraform Validate
-        working-directory: terraform
-        run: terraform validate
       
-      - name: Terraform Plan
-        working-directory: terraform
-        run: |
-          terraform plan \
-            -var-file=environments/dev/terraform.tfvars
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        working-directory: terraform
-        run: |
-          terraform apply \
-            -auto-approve \
-            -var-file=environments/dev/terraform.tfvars
 
       - name: Verify AWS Identity
         run: |
@@ -78,6 +56,14 @@ jobs:
           cd build
           zip -r ../lambda/packages/nova-chat.zip chat
 
+      - name: Verify Packages
+        run: |
+          echo "Repository root:"
+          pwd
+
+          echo "Lambda packages:"
+          ls -R lambda/packages
+
       - name: Build Ingest Package
         run: |
           mkdir -p build/ingest
@@ -107,3 +93,27 @@ jobs:
         with:
           name: lambda-packages
           path: lambda/packages/
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: terraform
+        run: terraform validate
+      
+      - name: Terraform Plan
+        working-directory: terraform
+        run: |
+          terraform plan \
+            -var-file=environments/dev/terraform.tfvars
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        working-directory: terraform
+        run: |
+          terraform apply \
+            -auto-approve \
+            -var-file=environments/dev/terraform.tfvars
