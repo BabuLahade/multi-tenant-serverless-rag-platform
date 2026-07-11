@@ -58,10 +58,10 @@ jobs:
           cp -r lambda/nova_chat/* build/chat/
           cp -r lambda/shared build/chat/
 
-          pip install -r lambda/nova_chat/requirements.txt -t build/chat
+          # pip install -r lambda/nova_chat/requirements.txt -t build/chat
 
-          cd build
-          zip -r ../lambda/packages/nova-chat.zip chat
+          cd build/chat
+          zip -r ../../lambda/packages/nova-chat.zip .
 
       - name: Verify Packages
         run: |
@@ -79,10 +79,10 @@ jobs:
           cp -r lambda/nova_ingest/* build/ingest/
           cp -r lambda/shared build/ingest/
 
-          pip install -r lambda/nova_ingest/requirements.txt -t build/ingest
+          # pip install -r lambda/nova_ingest/requirements.txt -t build/ingest
 
-          cd build
-          zip -r ../lambda/packages/nova-ingest.zip ingest
+          cd build/ingest
+          zip -r ../../lambda/packages/nova-ingest.zip .
 
       - name: Build Crawl Package
         run: |
@@ -91,10 +91,10 @@ jobs:
           cp -r lambda/nova_crawl/* build/crawl/
           cp -r lambda/shared build/crawl/
 
-          pip install -r lambda/nova_crawl/requirements.txt -t build/crawl
+          # pip install -r lambda/nova_crawl/requirements.txt -t build/crawl
 
-          cd build
-          zip -r ../lambda/packages/nova-crawl.zip crawl
+          cd build/crawl
+          zip -r ../../lambda/packages/nova-crawl.zip .
       - name: Show package sizes
         run: |
           du -sh lambda/packages/*
