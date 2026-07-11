@@ -9,7 +9,7 @@ EMBED_MODEL = "gemini-embedding-2"
 def get_client():
 
     api_key = get_secret(
-        "nova/gemini-api-key"
+        "nova/gemini_api_key"
     )
 
     return genai.Client(
