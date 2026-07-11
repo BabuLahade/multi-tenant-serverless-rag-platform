@@ -41,6 +41,16 @@ jobs:
         run: |
           mkdir -p lambda/packages
 
+      - name: Build Lambda Layer
+        run: |
+          mkdir -p build/layer/python
+
+          pip install -r lambda/layer/requirements.txt -t build/layer/python
+
+          cd build/layer
+
+          zip -r ../../lambda/packages/python-layer.zip .
+
       - name: Build Chat Package
         run: |
           mkdir -p build/chat
@@ -60,6 +70,7 @@ jobs:
 
           echo "Lambda packages:"
           ls -R lambda/packages
+          ls -lh lambda/packages
 
       - name: Build Ingest Package
         run: |
