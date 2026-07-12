@@ -1,4 +1,4 @@
- from google import genai
+from google import genai
 
 # from retrieve import search
 # from shared.secret_manager import get_secret
