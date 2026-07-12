@@ -1,9 +1,16 @@
-from google import genai
+ from google import genai
 
-from .retrieve import search
-from ..shared.secret_manager import get_secret
+# from retrieve import search
+# from shared.secret_manager import get_secret
 
-
+try:
+    # Running inside Lambda
+    from retrieve import search
+    from shared.secret_manager import get_secret
+except ImportError:
+    # Running locally
+    from .retrieve import search
+    from ..shared.secret_manager import get_secret
 def ask(client_id, question):
 
     chunks = search(
@@ -16,7 +23,7 @@ def ask(client_id, question):
     )
 
     api_key = get_secret(
-        "nova/gemini-api-key"
+        "nova/gemini_api_key"
     )
 
     client = genai.Client(

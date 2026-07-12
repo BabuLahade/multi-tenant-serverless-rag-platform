@@ -1,9 +1,16 @@
 import numpy as np
 
-from ..shared.embed import embed_query
-from ..shared.vector_repository import get_chunks
+# from shared.embed import embed_query
+# from shared.vector_repository import get_chunks
 
-
+try:
+    # Running inside Lambda
+    from shared.embed import embed_query
+    from shared.vector_repository import get_chunks
+except ImportError:
+    # Running locally
+    from ..shared.embed import embed_query
+    from ..shared.vector_repository import get_chunks
 def cosine_similarity(a, b):
 
     a = np.array(a)
