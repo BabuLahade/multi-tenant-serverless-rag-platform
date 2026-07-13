@@ -1,6 +1,12 @@
 from google import genai
 
-from .secret_manager import get_secret
+# from .secret_manager import get_secret
+try:
+    # Running inside Lambda
+    from shared.secret_manager import get_secret
+except ImportError:
+    # Running locally
+    from .secret_manager import get_secret
 
 
 EMBED_MODEL = "gemini-embedding-2"
