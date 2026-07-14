@@ -1,0 +1,16 @@
+Insurance Claim Process
+
+Required Documents
+
+1. Policy Number
+2. Government ID
+3. FIR copy (if applicable)
+4. Hospital Bills
+5. Medical Reports
+6. Claim Form
+
+Claims are processed within 7 working days after document verification.
+
+Health insurance covers hospitalization expenses.
+
+Motor insurance covers vehicle damage.
