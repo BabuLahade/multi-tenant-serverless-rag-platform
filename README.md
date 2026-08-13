@@ -16,4 +16,4 @@ Multi-tenant serverless RAG chatbot platform on AWS.
 - Phase 9 — SRE + Production Hardening
 
 ## Stack
-Lambda, API Gateway, DynamoDB, S3, SQS, DLQ, EventBridge, CloudWatch, X-Ray, Terraform, OIDC, Gemini
+Lambda, API Gateway, DynamoDB, S3, SQS, DLQ, EventBridge, CloudWatch, X-Ray, Terraform, OIDC, Gemini API
