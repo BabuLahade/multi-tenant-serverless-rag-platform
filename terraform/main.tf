@@ -2,7 +2,7 @@ module "raw_content_bucket" {
 
   source = "./modules/s3"
 
-  bucket_name = "nova-raw-content"
+  bucket_name = "nova-raw-content-169748358276"
 
   environment = var.environment
 
