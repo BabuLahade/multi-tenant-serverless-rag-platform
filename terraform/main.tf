@@ -7,7 +7,7 @@ module "raw_content_bucket" {
   environment = var.environment
 
   ingest_queue_arn = module.sqs.ingest_queue_arn
-  bucket_arn = module.sqs.ingest_queue_arn
+  bucket_arn = module.raw_content_bucket.bucket_arn
   ingest_queue_url = module.sqs.ingest_queue_url
 }
 
@@ -65,6 +65,7 @@ module "sqs" {
   environment = var.environment
 
   project_name = var.project_name
+  s3_bucket_arn = module.raw_content_bucket.bucket_arn
 }
 
 module "eventbridge" {
