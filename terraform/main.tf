@@ -9,6 +9,9 @@ module "raw_content_bucket" {
   ingest_queue_arn = module.sqs.ingest_queue_arn
   bucket_arn = module.raw_content_bucket.bucket_arn
   ingest_queue_url = module.sqs.ingest_queue_url
+  depends_on = [
+       module.sqs
+      ]
 }
 
 module "dynamodb" {
