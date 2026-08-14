@@ -65,14 +65,14 @@ resource "aws_sqs_queue_policy" "allow_s3" {
         Resource = aws_sqs_queue.ingest_queue.arn
 
         Condition = {
-          ArnEquals = {
-            "aws:SourceArn" = "arn:aws:s3:::nova-raw-content"
-          }
+            ArnEquals = {
+              "aws:SourceArn" = "arn:aws:s3:::nova-raw-content-169748358276"
+            }
 
-          StringEquals = {
-            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+            StringEquals = {
+              "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+            }
           }
-        }
       }
     ]
   })
