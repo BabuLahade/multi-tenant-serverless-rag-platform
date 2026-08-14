@@ -9,9 +9,7 @@ module "raw_content_bucket" {
   ingest_queue_arn = module.sqs.ingest_queue_arn
   bucket_arn = module.raw_content_bucket.bucket_arn
   ingest_queue_url = module.sqs.ingest_queue_url
-  depends_on = [
-       module.sqs
-      ]
+  
 }
 
 module "dynamodb" {
@@ -68,7 +66,7 @@ module "sqs" {
   environment = var.environment
 
   project_name = var.project_name
-  s3_bucket_arn = module.raw_content_bucket.bucket_arn
+  # s3_bucket_arn = module.raw_content_bucket.bucket_arn
 }
 
 module "eventbridge" {
