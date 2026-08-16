@@ -35,9 +35,9 @@ from rag import ask
 
 def handler(event, context):
 
-    print("===== EVENT =====")
-    print(json.dumps(event))
-    print("=================")
+    # print("===== EVENT =====")
+    # print(json.dumps(event))
+    # print("=================")
 
     raw_body = event.get("body")
 
