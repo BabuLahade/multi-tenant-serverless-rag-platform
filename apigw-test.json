@@ -1,0 +1,6 @@
+﻿{
+  "restApiId": "dh90wd8pxc",
+  "resourceId": "19kx9n",
+  "httpMethod": "POST",
+  "body": "{\"client_id\":\"fintech\",\"message\":\"What documents are needed for KYC?\"}"
+}
