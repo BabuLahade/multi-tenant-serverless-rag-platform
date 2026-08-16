@@ -1,17 +1,17 @@
 resource "aws_sqs_queue" "ingest_dlq" {
-    name = "nova-ingest_queue"
-    message_retention_seconds = 1209600 # 14 days 
+  name                      = "nova-ingest_queue"
+  message_retention_seconds = 1209600 # 14 days 
 }
 
 resource "aws_sqs_queue" "ingest_queue" {
-    name = "nova-ingest-queue"
+  name = "nova-ingest-queue"
 
-    visibility_timeout_seconds = 300
+  visibility_timeout_seconds = 300
 
-    redrive_policy = jsonencode({
-        deadLetterTargetArn = aws_sqs_queue.ingest_dlq.arn
-        maxReceiveCount     = 3
-    })
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.ingest_dlq.arn
+    maxReceiveCount     = 3
+  })
 }
 
 # resource "aws_sqs_queue_policy" "allow_s3" {
@@ -65,14 +65,14 @@ resource "aws_sqs_queue_policy" "allow_s3" {
         Resource = aws_sqs_queue.ingest_queue.arn
 
         Condition = {
-            ArnEquals = {
-              "aws:SourceArn" = "arn:aws:s3:::nova-raw-content-169748358276"
-            }
-
-            StringEquals = {
-              "aws:SourceAccount" = data.aws_caller_identity.current.account_id
-            }
+          ArnEquals = {
+            "aws:SourceArn" = "arn:aws:s3:::nova-raw-content-169748358276"
           }
+
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
       }
     ]
   })

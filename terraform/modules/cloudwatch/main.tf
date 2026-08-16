@@ -12,7 +12,7 @@ resource "aws_cloudwatch_dashboard" "nova" {
         x = 0
         y = 0
 
-        width = 12
+        width  = 12
         height = 6
 
         properties = {
@@ -40,7 +40,7 @@ resource "aws_cloudwatch_dashboard" "nova" {
         x = 12
         y = 0
 
-        width = 12
+        width  = 12
         height = 6
 
         properties = {
@@ -86,7 +86,7 @@ resource "aws_cloudwatch_metric_alarm" "dlq_depth" {
 
   threshold = 0
 
-  comparison_operator ="GreaterThanThreshold"
+  comparison_operator = "GreaterThanThreshold"
 
   alarm_description = "Messages found in DLQ"
 }
@@ -111,7 +111,7 @@ resource "aws_cloudwatch_metric_alarm" "chat_errors" {
 
   threshold = 5
 
-  comparison_operator ="GreaterThanThreshold"
+  comparison_operator = "GreaterThanThreshold"
 }
 
 resource "aws_cloudwatch_metric_alarm" "queue_age" {
@@ -120,7 +120,7 @@ resource "aws_cloudwatch_metric_alarm" "queue_age" {
 
   namespace = "AWS/SQS"
 
-  metric_name ="ApproximateAgeOfOldestMessage"
+  metric_name = "ApproximateAgeOfOldestMessage"
 
   dimensions = {
     QueueName = var.queue_name
@@ -134,7 +134,7 @@ resource "aws_cloudwatch_metric_alarm" "queue_age" {
 
   threshold = 300
 
-  comparison_operator ="GreaterThanThreshold"
+  comparison_operator = "GreaterThanThreshold"
 }
 
 resource "aws_cloudwatch_metric_alarm" "chat_duration" {

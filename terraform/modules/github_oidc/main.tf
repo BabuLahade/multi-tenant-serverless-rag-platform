@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "github_assume" {
 
       test = "StringEquals"
 
-      variable ="token.actions.githubusercontent.com:aud"
+      variable = "token.actions.githubusercontent.com:aud"
 
       values = [
         "sts.amazonaws.com"
@@ -45,7 +45,7 @@ data "aws_iam_policy_document" "github_assume" {
 
       test = "StringLike"
 
-      variable ="token.actions.githubusercontent.com:sub"
+      variable = "token.actions.githubusercontent.com:sub"
 
       values = [
         "repo:${var.github_repo}:*"
@@ -59,7 +59,7 @@ resource "aws_iam_role" "github_actions" {
 
   name = "nova-github-actions-role"
 
-  assume_role_policy =data.aws_iam_policy_document.github_assume.json
+  assume_role_policy = data.aws_iam_policy_document.github_assume.json
 }
 
 resource "aws_iam_role_policy_attachment" "admin" {

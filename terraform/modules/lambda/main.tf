@@ -16,22 +16,22 @@ resource "aws_lambda_layer_version" "python" {
 }
 
 resource "aws_lambda_function" "chat" {
-    function_name = "nova-chat"
-    role = var.lambda_role_arn
-    handler = "handler.handler"
-    runtime = "python3.12"
-    layers = [
-        aws_lambda_layer_version.python.arn
-    ]
-    filename = "${path.root}/../lambda/packages/nova-chat.zip"
+  function_name = "nova-chat"
+  role          = var.lambda_role_arn
+  handler       = "handler.handler"
+  runtime       = "python3.12"
+  layers = [
+    aws_lambda_layer_version.python.arn
+  ]
+  filename = "${path.root}/../lambda/packages/nova-chat.zip"
 
-    source_code_hash = filebase64sha256(
-      "${path.root}/../lambda/packages/nova-chat.zip"
-    )
-    tracing_config {
-            mode = "Active"
-    }
-    
+  source_code_hash = filebase64sha256(
+    "${path.root}/../lambda/packages/nova-chat.zip"
+  )
+  tracing_config {
+    mode = "Active"
+  }
+
 
   timeout = 30
 
@@ -49,17 +49,17 @@ resource "aws_lambda_function" "crawl" {
   handler = "handler.handler"
 
   layers = [
-        aws_lambda_layer_version.python.arn
-    ]
+    aws_lambda_layer_version.python.arn
+  ]
 
-  filename ="${path.root}/../lambda/packages/nova-crawl.zip"
+  filename = "${path.root}/../lambda/packages/nova-crawl.zip"
 
   source_code_hash = filebase64sha256(
-      "${path.root}/../lambda/packages/nova-crawl.zip"
-    )
+    "${path.root}/../lambda/packages/nova-crawl.zip"
+  )
   tracing_config {
-            mode = "Active"
-    }
+    mode = "Active"
+  }
 
   timeout = 60
 
@@ -76,17 +76,17 @@ resource "aws_lambda_function" "ingest" {
 
   handler = "handler.handler"
   layers = [
-        aws_lambda_layer_version.python.arn
-    ]
+    aws_lambda_layer_version.python.arn
+  ]
 
-  filename ="${path.root}/../lambda/packages/nova-ingest.zip"
+  filename = "${path.root}/../lambda/packages/nova-ingest.zip"
 
-  source_code_hash =filebase64sha256(
-      "${path.root}/../lambda/packages/nova-ingest.zip"
-    )
+  source_code_hash = filebase64sha256(
+    "${path.root}/../lambda/packages/nova-ingest.zip"
+  )
   tracing_config {
-            mode = "Active"
-    }
+    mode = "Active"
+  }
   timeout = 120
 
   memory_size = 1024

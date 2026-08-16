@@ -4,17 +4,17 @@ resource "aws_api_gateway_rest_api" "rag_api" {
 }
 
 resource "aws_api_gateway_resource" "chat" {
-  rest_api_id= aws_api_gateway_rest_api.rag_api.id
-  parent_id = aws_api_gateway_rest_api.rag_api.root_resource_id
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+  parent_id   = aws_api_gateway_rest_api.rag_api.root_resource_id
 
   path_part = "chat"
 }
 
 resource "aws_api_gateway_method" "chat_post" {
 
-  rest_api_id =aws_api_gateway_rest_api.rag_api.id
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
 
-  resource_id =aws_api_gateway_resource.chat.id
+  resource_id = aws_api_gateway_resource.chat.id
 
   http_method = "POST"
 
@@ -27,7 +27,7 @@ resource "aws_api_gateway_integration" "chat" {
 
   resource_id = aws_api_gateway_resource.chat.id
 
-  http_method =aws_api_gateway_method.chat_post.http_method
+  http_method = aws_api_gateway_method.chat_post.http_method
 
   integration_http_method = "POST"
 
@@ -43,14 +43,14 @@ resource "aws_lambda_permission" "chat" {
 
   action = "lambda:InvokeFunction"
 
-  function_name =var.chat_lambda_name
+  function_name = var.chat_lambda_name
 
-  principal ="apigateway.amazonaws.com"
+  principal = "apigateway.amazonaws.com"
 }
 
 resource "aws_api_gateway_resource" "crawl" {
 
-  rest_api_id =aws_api_gateway_rest_api.rag_api.id
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
 
   parent_id = aws_api_gateway_rest_api.rag_api.root_resource_id
 
@@ -59,9 +59,9 @@ resource "aws_api_gateway_resource" "crawl" {
 
 resource "aws_api_gateway_method" "crawl_post" {
 
-  rest_api_id =aws_api_gateway_rest_api.rag_api.id
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
 
-  resource_id =aws_api_gateway_resource.crawl.id
+  resource_id = aws_api_gateway_resource.crawl.id
 
   http_method = "POST"
 
@@ -72,14 +72,14 @@ resource "aws_api_gateway_integration" "crawl" {
 
   rest_api_id = aws_api_gateway_rest_api.rag_api.id
 
-  resource_id =aws_api_gateway_resource.crawl.id
+  resource_id = aws_api_gateway_resource.crawl.id
 
-  http_method =aws_api_gateway_method.crawl_post.http_method
+  http_method             = aws_api_gateway_method.crawl_post.http_method
   integration_http_method = "POST"
 
   type = "AWS_PROXY"
 
-  uri ="arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${var.crawl_lambda_arn}/invocations"
+  uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${var.crawl_lambda_arn}/invocations"
 }
 
 
@@ -89,9 +89,9 @@ resource "aws_lambda_permission" "crawl" {
 
   action = "lambda:InvokeFunction"
 
-  function_name =var.crawl_lambda_name
+  function_name = var.crawl_lambda_name
 
-  principal ="apigateway.amazonaws.com"
+  principal = "apigateway.amazonaws.com"
 }
 
 resource "aws_api_gateway_deployment" "rag" {
@@ -101,15 +101,15 @@ resource "aws_api_gateway_deployment" "rag" {
     aws_api_gateway_integration.crawl
   ]
 
-  rest_api_id =  aws_api_gateway_rest_api.rag_api.id
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
 }
 
 resource "aws_api_gateway_stage" "dev" {
 
-  deployment_id =aws_api_gateway_deployment.rag.id
+  deployment_id = aws_api_gateway_deployment.rag.id
 
-  rest_api_id =aws_api_gateway_rest_api.rag_api.id
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
 
-  stage_name = "dev"
+  stage_name           = "dev"
   xray_tracing_enabled = true
 }

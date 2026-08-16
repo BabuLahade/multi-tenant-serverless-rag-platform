@@ -30,14 +30,14 @@ resource "aws_iam_role_policy_attachment" "logs" {
 
   role = aws_iam_role.lambda_role.name
 
-  policy_arn ="arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_iam_role_policy_attachment" "xray" {
 
   role = aws_iam_role.lambda_role.name
 
-  policy_arn =  "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
 }
 
 
@@ -81,15 +81,15 @@ resource "aws_iam_policy" "lambda_data_access" {
           var.s3_bucket_arn,
           "${var.s3_bucket_arn}/*"
         ]
-      } ,
+      },
       {
         Effect = "Allow"
 
         Action = [
-            "sqs:SendMessage",
-            "sqs:ReceiveMessage",
-            "sqs:DeleteMessage",
-            "sqs:GetQueueAttributes"
+          "sqs:SendMessage",
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes"
         ]
 
         Resource = [var.ingest_queue_arn]
@@ -98,13 +98,13 @@ resource "aws_iam_policy" "lambda_data_access" {
         Effect = "Allow"
 
         Action = [
-        "secretsmanager:GetSecretValue"
-         ]
+          "secretsmanager:GetSecretValue"
+        ]
 
-         Resource = [
-             var.secret_arn
-            ]
-        }
+        Resource = [
+          var.secret_arn
+        ]
+      }
     ]
   })
 }

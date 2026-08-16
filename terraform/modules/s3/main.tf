@@ -2,9 +2,9 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "rag" {
   bucket = var.bucket_name
-  
 
-  tags ={
+
+  tags = {
     Environment = var.environment
     ManagedBy   = "Terraform"
 
@@ -13,9 +13,9 @@ resource "aws_s3_bucket" "rag" {
 
 resource "aws_s3_bucket_versioning" "rag" {
   bucket = aws_s3_bucket.rag.id
-    versioning_configuration {
-        status = "Enabled"
-    }
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 resource "aws_s3_bucket_server_side_encryption_configuration" "rag" {
 
