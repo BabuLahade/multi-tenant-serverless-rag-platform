@@ -65,7 +65,9 @@ resource "aws_api_gateway_method" "crawl_post" {
 
   http_method = "POST"
 
-  authorization = "NONE"
+  authorization = "CUSTOM"
+
+  authorizer_id = aws_api_gateway_authorizer.nova.id
 }
 
 resource "aws_api_gateway_integration" "crawl" {
@@ -112,4 +114,33 @@ resource "aws_api_gateway_stage" "dev" {
 
   stage_name           = "dev"
   xray_tracing_enabled = true
+}
+
+
+resource "aws_api_gateway_authorizer" "nova" {
+
+  name = "nova-authorizer"
+
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+
+  authorizer_uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${var.authorizer_lambda_arn}/invocations"
+
+  type = "REQUEST"
+
+  identity_source = "method.request.header.x-api-key"
+
+  authorizer_result_ttl_in_seconds = 300
+}
+
+resource "aws_lambda_permission" "authorizer" {
+
+  statement_id = "AllowApiGatewayAuthorizer"
+
+  action = "lambda:InvokeFunction"
+
+  function_name = var.authorizer_lambda_name
+
+  principal = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_rest_api.rag_api.execution_arn}/*"
 }

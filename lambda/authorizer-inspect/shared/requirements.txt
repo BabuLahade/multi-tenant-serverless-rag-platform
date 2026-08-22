@@ -1,0 +1,5 @@
+boto3
+google-genai
+numpy
+requests
+beautifulsoup4

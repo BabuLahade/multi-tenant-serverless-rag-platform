@@ -94,7 +94,16 @@ jobs:
           # pip install -r lambda/nova_crawl/requirements.txt -t build/crawl
 
           cd build/crawl
-          zip -r ../../lambda/packages/nova-crawl.zip .
+          zip -r ../../lambda/packages/nova-crawl.zip .  
+
+      - name: Build Authorizer Package
+        run: |
+          mkdir -p build/authorizer
+
+          cp -r lambda/nova_authorizer/* build/authorizer/
+
+          cd build/authorizer
+          zip -r ../../lambda/packages/nova-authorizer.zip .
       - name: Show package sizes
         run: |
           du -sh lambda/packages/*

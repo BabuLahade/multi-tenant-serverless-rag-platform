@@ -21,3 +21,11 @@ output "crawl_lambda_name" {
 output "ingest_lambda_name" {
   value = aws_lambda_function.ingest.function_name
 }
+
+output "authorizer_lambda_arn" {
+  value = aws_lambda_function.authorizer.arn
+}
+
+output "authorizer_lambda_name" {
+  value = aws_lambda_function.authorizer.function_name
+}

@@ -102,3 +102,29 @@ resource "aws_lambda_event_source_mapping" "ingest" {
 
   enabled = true
 }
+
+
+resource "aws_lambda_function" "authorizer" {
+
+  function_name = "nova-authorizer"
+
+  role = var.lambda_role_arn
+
+  runtime = "python3.12"
+
+  handler = "handler.handler"
+
+  filename = "${path.root}/../lambda/packages/nova-authorizer.zip"
+
+  source_code_hash = filebase64sha256(
+    "${path.root}/../lambda/packages/nova-authorizer.zip"
+  )
+
+  timeout = 5
+
+  memory_size = 128
+
+  tracing_config {
+    mode = "Active"
+  }
+}

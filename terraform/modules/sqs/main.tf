@@ -1,5 +1,5 @@
 resource "aws_sqs_queue" "ingest_dlq" {
-  name                      = "nova-ingest_queue"
+  name                      = "nova-ingest-dlq"
   message_retention_seconds = 1209600 # 14 days 
 }
 

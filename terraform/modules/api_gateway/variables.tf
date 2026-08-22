@@ -13,3 +13,11 @@ variable "crawl_lambda_arn" {
 variable "crawl_lambda_name" {
   type = string
 }
+
+variable "authorizer_lambda_arn" {
+  type = string
+}
+
+variable "authorizer_lambda_name" {
+  type = string
+}

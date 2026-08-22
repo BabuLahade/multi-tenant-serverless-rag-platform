@@ -57,6 +57,10 @@ module "api_gateway" {
   crawl_lambda_arn = module.lambda.crawl_lambda_arn
 
   crawl_lambda_name = module.lambda.crawl_lambda_name
+
+  authorizer_lambda_arn = module.lambda.authorizer_lambda_arn
+
+  authorizer_lambda_name = module.lambda.authorizer_lambda_name
 }
 
 module "sqs" {
