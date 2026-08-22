@@ -18,7 +18,9 @@ resource "aws_api_gateway_method" "chat_post" {
 
   http_method = "POST"
 
-  authorization = "NONE"
+  authorization = "CUSTOM"
+
+  authorizer_id = aws_api_gateway_authorizer.nova.id
 }
 
 resource "aws_api_gateway_integration" "chat" {
