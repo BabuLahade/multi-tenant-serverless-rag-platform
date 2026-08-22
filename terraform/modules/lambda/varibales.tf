@@ -14,10 +14,10 @@ variable "ingest_queue_arn" {
   type = string
 }
 
-variable "lambda_role_arn" {
-  type = string
-}
+# variable "lambda_role_arn" {
+#   type = string
+# }
 
-variable "ingest_queue_arn" {
-  type = string
-}
+# variable "ingest_queue_arn" {
+#   type = string
+# }
