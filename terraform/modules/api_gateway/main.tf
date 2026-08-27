@@ -59,7 +59,7 @@ resource "aws_api_gateway_integration" "chat_options" {
 resource "aws_api_gateway_method_response" "chat_options" {
   rest_api_id = aws_api_gateway_rest_api.rag_api.id
   resource_id = aws_api_gateway_resource.chat.id
-  http_method = aws_api_gatway_method.chat_options.http_method
+  http_method = aws_api_gateway_method.chat_options.http_method
   status_code = "200"
   response_models = {
     "application/json" = "Empty"
