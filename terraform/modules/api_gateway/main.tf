@@ -225,18 +225,76 @@ resource "aws_lambda_permission" "crawl" {
   principal = "apigateway.amazonaws.com"
 }
 
+# resource "aws_api_gateway_deployment" "rag" {
+
+#   depends_on = [
+#     aws_api_gateway_integration.chat,
+#     aws_api_gateway_integration.crawl ,
+#     aws_api_gateway_integration.chat_options,
+#     aws_api_gateway_integration.crawl_options
+#   ]
+
+#   rest_api_id = aws_api_gateway_rest_api.rag_api.id
+# }
 resource "aws_api_gateway_deployment" "rag" {
 
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+
   depends_on = [
+    aws_api_gateway_method.chat_post,
+    aws_api_gateway_method.chat_options,
     aws_api_gateway_integration.chat,
-    aws_api_gateway_integration.crawl ,
     aws_api_gateway_integration.chat_options,
-    aws_api_gateway_integration.crawl_options
+    aws_api_gateway_method_response.chat_options,
+    aws_api_gateway_integration_response.chat_options,
+
+    aws_api_gateway_method.crawl_post,
+    aws_api_gateway_method.crawl_options,
+    aws_api_gateway_integration.crawl,
+    aws_api_gateway_integration.crawl_options,
+    aws_api_gateway_method_response.crawl_options,
+    aws_api_gateway_integration_response.crawl_options
   ]
 
-  rest_api_id = aws_api_gateway_rest_api.rag_api.id
-}
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_api_gateway_resource.chat.path_part,
+      aws_api_gateway_method.chat_post.http_method,
+      aws_api_gateway_method.chat_post.authorization,
+      aws_api_gateway_integration.chat.integration_http_method,
+      aws_api_gateway_integration.chat.type,
+      aws_api_gateway_integration.chat.uri,
 
+      aws_api_gateway_method.chat_options.http_method,
+      aws_api_gateway_method.chat_options.authorization,
+      aws_api_gateway_integration.chat_options.type,
+      aws_api_gateway_integration.chat_options.request_templates,
+      aws_api_gateway_method_response.chat_options.response_parameters,
+      aws_api_gateway_integration_response.chat_options.response_parameters,
+
+      aws_api_gateway_resource.crawl.path_part,
+      aws_api_gateway_method.crawl_post.http_method,
+      aws_api_gateway_method.crawl_post.authorization,
+      aws_api_gateway_integration.crawl.integration_http_method,
+      aws_api_gateway_integration.crawl.type,
+      aws_api_gateway_integration.crawl.uri,
+
+      aws_api_gateway_method.crawl_options.http_method,
+      aws_api_gateway_method.crawl_options.authorization,
+      aws_api_gateway_integration.crawl_options.type,
+      aws_api_gateway_integration.crawl_options.request_templates,
+      aws_api_gateway_method_response.crawl_options.response_parameters,
+      aws_api_gateway_integration_response.crawl_options.response_parameters,
+
+      aws_api_gateway_authorizer.nova.identity_source,
+      aws_api_gateway_authorizer.nova.type
+    ]))
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 resource "aws_api_gateway_stage" "dev" {
 
   deployment_id = aws_api_gateway_deployment.rag.id
