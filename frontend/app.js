@@ -1,15 +1,97 @@
+// const API =
+// "https://f9bdmtcslf.execute-api.ap-south-1.amazonaws.com/dev/chat";
+
+// const CLIENT_ID = "fintech";
+
+// const messages = document.getElementById("messages");
+
+// const input = document.getElementById("message");
+
+// const button = document.getElementById("sendBtn");
+
+// function addMessage(text, cls){
+
+//     const div = document.createElement("div");
+
+//     div.className = "message " + cls;
+
+//     div.innerText = text;
+
+//     messages.appendChild(div);
+
+//     messages.scrollTop = messages.scrollHeight;
+
+// }
+
+// async function sendMessage(){
+
+//     const question = input.value.trim();
+
+//     if(question==="") return;
+
+//     addMessage(question,"user");
+
+//     input.value="";
+
+//     try{
+
+//         const response = await fetch(API,{
+
+//             method:"POST",
+
+//             headers:{
+//                 "Content-Type":"application/json"
+//             },
+
+//             body:JSON.stringify({
+
+//                 client_id:CLIENT_ID,
+
+//                 message:question
+
+//             })
+
+//         });
+
+//         const data = await response.json();
+
+//         addMessage(data.answer,"bot");
+
+//     }
+
+//     catch(err){
+
+//         addMessage("Unable to contact server.","bot");
+
+//         console.error(err);
+
+//     }
+
+// }
+
+// button.onclick = sendMessage;
+
+// input.addEventListener("keypress",function(e){
+
+//     if(e.key==="Enter"){
+
+//         sendMessage();
+
+//     }
+
+// });
+
 const API =
-"https://f9bdmtcslf.execute-api.ap-south-1.amazonaws.com/dev/chat";
+    "https://dh90wd8pxc.execute-api.ap-south-1.amazonaws.com/dev/chat";
 
 const CLIENT_ID = "fintech";
 
 const messages = document.getElementById("messages");
-
 const input = document.getElementById("message");
-
 const button = document.getElementById("sendBtn");
 
-function addMessage(text, cls){
+
+function addMessage(text, cls) {
 
     const div = document.createElement("div");
 
@@ -20,60 +102,89 @@ function addMessage(text, cls){
     messages.appendChild(div);
 
     messages.scrollTop = messages.scrollHeight;
-
 }
 
-async function sendMessage(){
+
+async function sendMessage() {
 
     const question = input.value.trim();
 
-    if(question==="") return;
+    if (question === "") {
+        return;
+    }
 
-    addMessage(question,"user");
+    addMessage(question, "user");
 
-    input.value="";
+    input.value = "";
 
-    try{
+    button.disabled = true;
 
-        const response = await fetch(API,{
+    try {
 
-            method:"POST",
+        const response = await fetch(API, {
 
-            headers:{
-                "Content-Type":"application/json"
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
             },
 
-            body:JSON.stringify({
+            body: JSON.stringify({
 
-                client_id:CLIENT_ID,
+                client_id: CLIENT_ID,
 
-                message:question
+                message: question
 
             })
 
         });
 
+
         const data = await response.json();
 
-        addMessage(data.answer,"bot");
 
-    }
+        if (!response.ok) {
 
-    catch(err){
+            addMessage(
+                data.error || "Request failed.",
+                "bot"
+            );
 
-        addMessage("Unable to contact server.","bot");
+            return;
+        }
+
+
+        addMessage(
+            data.answer || "No answer received.",
+            "bot"
+        );
+
+
+    } catch (err) {
+
+        addMessage(
+            "Unable to contact server.",
+            "bot"
+        );
 
         console.error(err);
 
-    }
+    } finally {
 
+        button.disabled = false;
+
+        input.focus();
+
+    }
 }
 
-button.onclick = sendMessage;
 
-input.addEventListener("keypress",function(e){
+button.addEventListener("click", sendMessage);
 
-    if(e.key==="Enter"){
+
+input.addEventListener("keypress", function (e) {
+
+    if (e.key === "Enter") {
 
         sendMessage();
 

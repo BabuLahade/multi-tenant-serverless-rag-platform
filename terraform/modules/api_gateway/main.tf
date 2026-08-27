@@ -37,6 +37,62 @@ resource "aws_api_gateway_integration" "chat" {
 
   uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${var.chat_lambda_arn}/invocations"
 }
+
+resource "aws_api_gateway_method" "chat_options" {
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+  resource_id = aws_api_gateway_resource.chat.id
+  http_method = "OPTIONS"
+  authorization = "NONE"
+
+}
+
+resource "aws_api_gateway_integration" "chat_options" {
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+  resource_id = aws_api_gateway_resource.chat.id
+  http_method = aws_api_gateway_method.chat_options.http_method 
+  type = "MOCK"
+  request_templates = {
+    "application/json" = "{\"statusCode\": 200}"
+  }
+}
+
+resource "aws_api_gateway_method_response" "chat_options" {
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+  resource_id = aws_api_gateway_resource.chat.id
+  http_method = aws_api_gatway_method.chat_options.http_method
+  status_code = "200"
+  response_models = {
+    "application/json" = "Empty"
+  }
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+
+resource "aws_api_gateway_integration_response" "chat_options" {
+
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+
+  resource_id = aws_api_gateway_resource.chat.id
+
+  http_method = aws_api_gateway_method.chat_options.http_method
+
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,POST'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [
+    aws_api_gateway_integration.chat_options
+  ]
+}
+
 data "aws_region" "current" {}
 
 resource "aws_lambda_permission" "chat" {
@@ -86,6 +142,77 @@ resource "aws_api_gateway_integration" "crawl" {
   uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${var.crawl_lambda_arn}/invocations"
 }
 
+resource "aws_api_gateway_method" "crawl_options" {
+
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+
+  resource_id = aws_api_gateway_resource.crawl.id
+
+  http_method = "OPTIONS"
+
+  authorization = "NONE"
+}
+
+
+resource "aws_api_gateway_integration" "crawl_options" {
+
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+
+  resource_id = aws_api_gateway_resource.crawl.id
+
+  http_method = aws_api_gateway_method.crawl_options.http_method
+
+  type = "MOCK"
+
+  request_templates = {
+    "application/json" = "{\"statusCode\": 200}"
+  }
+}
+
+
+resource "aws_api_gateway_method_response" "crawl_options" {
+
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+
+  resource_id = aws_api_gateway_resource.crawl.id
+
+  http_method = aws_api_gateway_method.crawl_options.http_method
+
+  status_code = "200"
+
+  response_models = {
+    "application/json" = "Empty"
+  }
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+
+resource "aws_api_gateway_integration_response" "crawl_options" {
+
+  rest_api_id = aws_api_gateway_rest_api.rag_api.id
+
+  resource_id = aws_api_gateway_resource.crawl.id
+
+  http_method = aws_api_gateway_method.crawl_options.http_method
+
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+    "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,POST'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'"
+  }
+
+  depends_on = [
+    aws_api_gateway_integration.crawl_options
+  ]
+}
+
 
 resource "aws_lambda_permission" "crawl" {
 
@@ -102,7 +229,9 @@ resource "aws_api_gateway_deployment" "rag" {
 
   depends_on = [
     aws_api_gateway_integration.chat,
-    aws_api_gateway_integration.crawl
+    aws_api_gateway_integration.crawl ,
+    aws_api_gateway_integration.chat_options,
+    aws_api_gateway_integration.crawl_options
   ]
 
   rest_api_id = aws_api_gateway_rest_api.rag_api.id
