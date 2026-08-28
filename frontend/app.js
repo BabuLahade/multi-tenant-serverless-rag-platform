@@ -126,7 +126,8 @@ async function sendMessage() {
             method: "POST",
 
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "x-api-key": "fintech-key"
             },
 
             body: JSON.stringify({

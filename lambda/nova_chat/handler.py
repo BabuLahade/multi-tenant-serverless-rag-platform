@@ -57,7 +57,7 @@ def handler(event, context):
         raw_body = base64.b64decode(raw_body).decode("utf-8")
 
     try:
-        body = json.loads(raw_body)
+        body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
     except (json.JSONDecodeError, TypeError):
         return {
             "statusCode": 400,
