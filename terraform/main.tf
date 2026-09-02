@@ -43,6 +43,7 @@ module "lambda" {
   project_name     = var.project_name
   lambda_role_arn  = module.iam.lambda_role_arn
   ingest_queue_arn = module.sqs.ingest_queue_arn
+  sqs_queue_url = module.sqs.sqs_queue_url
 
 }
 
