@@ -60,7 +60,11 @@ resource "aws_lambda_function" "crawl" {
   tracing_config {
     mode = "Active"
   }
-
+  environment {
+    variables = {
+      SQS_QUEUE_URL = var.sqs_queue_url
+    }
+  }
   timeout = 60
 
   memory_size = 512

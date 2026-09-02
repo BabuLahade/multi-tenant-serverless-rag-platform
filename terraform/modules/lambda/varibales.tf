@@ -21,3 +21,7 @@ variable "ingest_queue_arn" {
 # variable "ingest_queue_arn" {
 #   type = string
 # }
+
+variable "sqs_queue_url" {
+  type = string
+}
