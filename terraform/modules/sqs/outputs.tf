@@ -17,3 +17,7 @@ output "queue_name" {
 output "dlq_name" {
   value = aws_sqs_queue.ingest_dlq.name
 }
+
+output "sqs_queue_url" {
+  value = aws_sqs_queue.ingest_queue.url
+}
