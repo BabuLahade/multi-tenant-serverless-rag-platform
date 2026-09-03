@@ -39,7 +39,7 @@
 
 </body>
 </html> -->
-
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,4 +82,166 @@
 <script src="app.js"></script>
 
 </body>
-</html> -->
+</html> --> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova RAG Platform</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #0f172a; color: white; }
+    .hero {
+      padding: 100px 40px;
+      text-align: center;
+      background: linear-gradient(135deg, #1e3a8a, #0f172a);
+    }
+    .hero h1 { font-size: 48px; margin-bottom: 16px; }
+    .hero p  { font-size: 20px; opacity: 0.7; margin-bottom: 40px; }
+    .badge {
+      display: inline-block;
+      background: #2563eb;
+      padding: 8px 20px;
+      border-radius: 99px;
+      font-size: 13px;
+      margin-bottom: 30px;
+    }
+    .demos {
+      max-width: 960px;
+      margin: 60px auto;
+      padding: 0 40px;
+    }
+    .demos h2 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 32px;
+      color: #93c5fd;
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .demo-card {
+      background: #1e293b;
+      border-radius: 14px;
+      padding: 32px 24px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      border: 1px solid #334155;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .demo-card:hover {
+      transform: translateY(-4px);
+      border-color: #2563eb;
+    }
+    .demo-card .icon { font-size: 40px; margin-bottom: 16px; }
+    .demo-card h3 { font-size: 20px; margin-bottom: 8px; }
+    .demo-card p  { font-size: 14px; opacity: 0.6; margin-bottom: 16px; }
+    .demo-card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-weight: bold;
+    }
+    .stack {
+      max-width: 960px;
+      margin: 0 auto 60px;
+      padding: 0 40px;
+    }
+    .stack h2 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 24px;
+      color: #93c5fd;
+    }
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .pill {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 8px 16px;
+      border-radius: 99px;
+      font-size: 13px;
+      color: #93c5fd;
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #475569;
+      font-size: 13px;
+      border-top: 1px solid #1e293b;
+    }
+    footer a { color: #2563eb; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="badge">Multi-Tenant Serverless RAG Platform</div>
+    <h1>Nova AI Platform</h1>
+    <p>Deploy branded AI chatbots trained on any website — in minutes</p>
+  </div>
+
+  <div class="demos">
+    <h2>Live Demo Tenants</h2>
+    <div class="demo-grid">
+
+      <a class="demo-card" href="fintech.html">
+        <div class="icon">🏦</div>
+        <h3>NovaPay</h3>
+        <p>Fintech support — loans, KYC, credit cards</p>
+        <span class="tag" style="background:#1d4ed8">fintech tenant</span>
+      </a>
+
+      <a class="demo-card" href="healthcare.html">
+        <div class="icon">🏥</div>
+        <h3>MediCare AI</h3>
+        <p>Healthcare — appointments, departments</p>
+        <span class="tag" style="background:#15803d">healthcare tenant</span>
+      </a>
+
+      <a class="demo-card" href="store.html">
+        <div class="icon">🛍️</div>
+        <h3>ShopAssist</h3>
+        <p>Ecommerce — products, returns, shipping</p>
+        <span class="tag" style="background:#c2410c">store tenant</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="stack">
+    <h2>Built With</h2>
+    <div class="pills">
+      <span class="pill">AWS Lambda</span>
+      <span class="pill">API Gateway</span>
+      <span class="pill">DynamoDB</span>
+      <span class="pill">S3</span>
+      <span class="pill">SQS + DLQ</span>
+      <span class="pill">EventBridge</span>
+      <span class="pill">CloudWatch</span>
+      <span class="pill">X-Ray</span>
+      <span class="pill">Terraform</span>
+      <span class="pill">GitHub Actions OIDC</span>
+      <span class="pill">Gemini API</span>
+      <span class="pill">Python</span>
+    </div>
+  </div>
+
+  <footer>
+    Built by <a href="https://github.com/BabuLahade" target="_blank">Babu Lahade</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/BabuLahade/nova-rag-platform" target="_blank">GitHub</a>
+  </footer>
+
+</body>
+</html>

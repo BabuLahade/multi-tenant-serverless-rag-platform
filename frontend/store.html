@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopAssist — Store Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #fff7f0; color: #111; }
+    .hero {
+      background: #f97316;
+      color: white;
+      padding: 80px 40px;
+      text-align: center;
+    }
+    .hero h1 { font-size: 42px; margin-bottom: 16px; }
+    .hero p  { font-size: 20px; opacity: 0.85; }
+    .section {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 0 40px;
+    }
+    .section h2 { font-size: 28px; color: #f97316; margin-bottom: 20px; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .card .icon { font-size: 36px; margin-bottom: 12px; }
+    .card h3 { font-size: 18px; margin-bottom: 8px; color: #f97316; }
+    .card p  { font-size: 14px; color: #555; line-height: 1.5; }
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <h1>ShopAssist Store</h1>
+    <p>Products, returns, shipping — all answered instantly</p>
+  </div>
+
+  <div class="section">
+    <h2>Why Shop With Us</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">🚚</div>
+        <h3>Fast Shipping</h3>
+        <p>Free delivery on orders above ₹499. Delivered in 3–5 days.</p>
+      </div>
+      <div class="card">
+        <div class="icon">↩️</div>
+        <h3>Easy Returns</h3>
+        <p>30-day no-questions-asked return policy on all products.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🛡️</div>
+        <h3>Secure Payments</h3>
+        <p>UPI, cards, net banking — all encrypted and safe.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Nova RAG Platform Demo — store tenant · Built by Babu Lahade
+  </footer>
+
+  <!-- Nova Widget -->
+  <script
+    src="../widget/widget.js"
+    data-client-id="store"
+    data-api-key="store-key"
+    data-bot-name="ShopAssist"
+    data-brand-color="#f97316"
+  ></script>
+
+</body>
+</html>

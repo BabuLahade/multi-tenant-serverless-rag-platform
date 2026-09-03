@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaPay — Fintech Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f0f4ff; color: #111; }
+    .hero {
+      background: #2563eb;
+      color: white;
+      padding: 80px 40px;
+      text-align: center;
+    }
+    .hero h1 { font-size: 42px; margin-bottom: 16px; }
+    .hero p  { font-size: 20px; opacity: 0.85; }
+    .section {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 0 40px;
+    }
+    .section h2 { font-size: 28px; color: #2563eb; margin-bottom: 20px; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .card .icon { font-size: 36px; margin-bottom: 12px; }
+    .card h3 { font-size: 18px; margin-bottom: 8px; color: #2563eb; }
+    .card p  { font-size: 14px; color: #555; line-height: 1.5; }
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <h1>NovaPay Financial Services</h1>
+    <p>Personal loans, credit cards, and KYC — all in one place</p>
+  </div>
+
+  <div class="section">
+    <h2>Our Products</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">💳</div>
+        <h3>Credit Cards</h3>
+        <p>Minimum income ₹25,000/mo. Limits based on credit score.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🏦</div>
+        <h3>Personal Loans</h3>
+        <p>₹50,000 to ₹50,00,000. Rates from 10.5% p.a. Tenure 1–5 years.</p>
+      </div>
+      <div class="card">
+        <div class="icon">✅</div>
+        <h3>KYC Verification</h3>
+        <p>Submit Aadhaar + PAN. Verified in 2–3 business days.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Nova RAG Platform Demo — fintech tenant · Built by Babu Lahade
+  </footer>
+
+  <!-- Nova Widget -->
+  <script
+    src="../widget/widget.js"
+    data-client-id="fintech"
+    data-api-key="fintech-key"
+    data-bot-name="NovaPay Assistant"
+    data-brand-color="#2563eb"
+  ></script>
+
+</body>
+</html>
