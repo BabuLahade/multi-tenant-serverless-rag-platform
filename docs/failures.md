@@ -1644,4 +1644,4 @@ S3 event notification was configured but messages were silently dropped.
 
 **Fix:** Added aws_sqs_queue_policy resource in Terraform granting S3 permission.
 
-**Prevention:** Always test the full pipeline end-to-end after adding event sources.
+**Prevention:** Always test the full pipeline end-to-end after adding event sources..
