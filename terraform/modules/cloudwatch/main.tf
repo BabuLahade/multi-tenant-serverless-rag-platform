@@ -1,67 +1,146 @@
+resource "aws_sns_topic" "nova_alerts" {
+  name = "nova-rag-alerts"
+}
+
+
+resource "aws_sns_topic_subscription" "email" {
+  topic_arn = aws_sns_topic.nova_alerts.arn
+  protocol  = "email"
+  endpoint  = "babulahade@gmail.com"
+}
+
+
 resource "aws_cloudwatch_dashboard" "nova" {
 
   dashboard_name = "nova-rag-dashboard"
 
   dashboard_body = jsonencode({
-
     widgets = [
+  {
+    type       = "metric"
+    x = 0 
+    y = 0
+    width = 12
+     height = 6
+    properties = {
+      metrics = [["AWS/Lambda", "Invocations", "FunctionName", var.chat_lambda_name]]
+      view    = "timeSeries"
+      title   = "Chat Lambda Invocations"
+      region  = "ap-south-1"
+    }
+  },
+  {
+    type       = "metric"
+    x = 12
+     y = 0
+    width = 12
+     height = 6
+    properties = {
+      metrics = [["AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", var.queue_name]]
+      view    = "timeSeries"
+      title   = "Queue Depth"
+      region  = "ap-south-1"
+    }
+  },
+  {
+    type       = "metric"
+    x = 0
+      y = 6
+    width = 12
+     height = 6
+    properties = {
+      metrics = [["AWS/Lambda", "Errors", "FunctionName", var.chat_lambda_name]]
+      view    = "timeSeries"
+      title   = "Chat Lambda Errors"
+      region  = "ap-south-1"
+    }
+  },
+  {
+    type       = "metric"
+    x = 12
+     y = 6
+    width = 12
+    height = 6
+    properties = {
+      metrics = [["AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", var.dlq_name]]
+      view    = "timeSeries"
+      title   = "DLQ Depth"
+      region  = "ap-south-1"
+    }
+  },
+  {
+    type       = "metric"
+    x = 0
+      y = 12
+    width = 24
+     height = 6
+    properties = {
+      metrics = [["AWS/Lambda", "Duration", "FunctionName", var.chat_lambda_name, { stat = "p99" }]]
+      view    = "timeSeries"
+      title   = "Chat Lambda p99 Latency (ms)"
+      region  = "ap-south-1"
+    }
+  }
+]
 
-      {
-        type = "metric"
+    # widgets = [
 
-        x = 0
-        y = 0
+    #   {
+    #     type = "metric"
 
-        width  = 12
-        height = 6
+    #     x = 0
+    #     y = 0
 
-        properties = {
+    #     width  = 12
+    #     height = 6
 
-          metrics = [
-            [
-              "AWS/Lambda",
-              "Invocations",
-              "FunctionName",
-              var.chat_lambda_name
-            ]
-          ]
+    #     properties = {
 
-          view = "timeSeries"
+    #       metrics = [
+    #         [
+    #           "AWS/Lambda",
+    #           "Invocations",
+    #           "FunctionName",
+    #           var.chat_lambda_name
+    #         ]
+    #       ]
 
-          title = "Chat Lambda Invocations"
+    #       view = "timeSeries"
 
-          region = "ap-south-1"
-        }
-      },
+    #       title = "Chat Lambda Invocations"
 
-      {
-        type = "metric"
+    #       region = "ap-south-1"
+    #     }
+    #   },
 
-        x = 12
-        y = 0
+    #   {
+    #     type = "metric"
 
-        width  = 12
-        height = 6
+    #     x = 12
+    #     y = 0
 
-        properties = {
+    #     width  = 12
+    #     height = 6
 
-          metrics = [
-            [
-              "AWS/SQS",
-              "ApproximateNumberOfMessagesVisible",
-              "QueueName",
-              var.queue_name
-            ]
-          ]
+    #     properties = {
 
-          view = "timeSeries"
+    #       metrics = [
+    #         [
+    #           "AWS/SQS",
+    #           "ApproximateNumberOfMessagesVisible",
+    #           "QueueName",
+    #           var.queue_name
+    #         ]
+    #       ]
 
-          title = "Queue Depth"
+    #       view = "timeSeries"
 
-          region = "ap-south-1"
-        }
-      }
-    ]
+    #       title = "Queue Depth"
+
+    #       region = "ap-south-1"
+    #     }
+    #   }
+    # ]
   })
 }
 
@@ -89,6 +168,8 @@ resource "aws_cloudwatch_metric_alarm" "dlq_depth" {
   comparison_operator = "GreaterThanThreshold"
 
   alarm_description = "Messages found in DLQ"
+  alarm_actions       = [aws_sns_topic.nova_alerts.arn]
+  ok_actions          = [aws_sns_topic.nova_alerts.arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "chat_errors" {
@@ -112,6 +193,8 @@ resource "aws_cloudwatch_metric_alarm" "chat_errors" {
   threshold = 5
 
   comparison_operator = "GreaterThanThreshold"
+  alarm_actions       = [aws_sns_topic.nova_alerts.arn]
+  ok_actions          = [aws_sns_topic.nova_alerts.arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "queue_age" {
@@ -135,6 +218,9 @@ resource "aws_cloudwatch_metric_alarm" "queue_age" {
   threshold = 300
 
   comparison_operator = "GreaterThanThreshold"
+
+  alarm_actions       = [aws_sns_topic.nova_alerts.arn]
+  ok_actions          = [aws_sns_topic.nova_alerts.arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "chat_duration" {
@@ -158,4 +244,7 @@ resource "aws_cloudwatch_metric_alarm" "chat_duration" {
   threshold = 8000
 
   comparison_operator = "GreaterThanThreshold"
+
+  alarm_actions       = [aws_sns_topic.nova_alerts.arn]
+  ok_actions          = [aws_sns_topic.nova_alerts.arn]
 }
