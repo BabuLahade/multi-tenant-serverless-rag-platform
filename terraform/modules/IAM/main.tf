@@ -41,42 +41,101 @@ resource "aws_iam_role_policy_attachment" "xray" {
 }
 
 
+# resource "aws_iam_policy" "lambda_data_access" {
+
+#   name = "nova-lambda-data-access"
+
+#   policy = jsonencode({
+
+#     Version = "2012-10-17"
+
+#     Statement = [
+
+#       {
+#         Effect = "Allow"
+
+#         Action = [
+#           "dynamodb:GetItem",
+#           "dynamodb:PutItem",
+#           "dynamodb:Query",
+#           "dynamodb:UpdateItem"
+#         ]
+
+#         Resource = [
+#           var.vectors_table_arn,
+#           var.configs_table_arn,
+#           var.sessions_table_arn
+#         ]
+#       },
+
+#       {
+#         Effect = "Allow"
+
+#         Action = [
+#           "s3:GetObject",
+#           "s3:PutObject",
+#           "s3:ListBucket"
+#         ]
+
+#         Resource = [
+#           var.s3_bucket_arn,
+#           "${var.s3_bucket_arn}/*"
+#         ]
+#       },
+#       {
+#         Effect = "Allow"
+
+#         Action = [
+#           "sqs:SendMessage",
+#           "sqs:ReceiveMessage",
+#           "sqs:DeleteMessage",
+#           "sqs:GetQueueAttributes"
+#         ]
+
+#         Resource = [var.ingest_queue_arn]
+#       },
+#       {
+#         Effect = "Allow"
+
+#         Action = [
+#           "secretsmanager:GetSecretValue"
+#         ]
+
+#         Resource = [
+#           var.secret_arn
+#         ]
+#       }
+#     ]
+#   })
+# }
+
 resource "aws_iam_policy" "lambda_data_access" {
-
   name = "nova-lambda-data-access"
-
   policy = jsonencode({
-
     Version = "2012-10-17"
-
     Statement = [
-
       {
         Effect = "Allow"
-
         Action = [
           "dynamodb:GetItem",
           "dynamodb:PutItem",
           "dynamodb:Query",
-          "dynamodb:UpdateItem"
+          "dynamodb:UpdateItem",
+          "dynamodb:Scan" # Added Scan action here
         ]
-
         Resource = [
           var.vectors_table_arn,
           var.configs_table_arn,
           var.sessions_table_arn
         ]
       },
-
       {
         Effect = "Allow"
-
         Action = [
           "s3:GetObject",
           "s3:PutObject",
           "s3:ListBucket"
         ]
-
         Resource = [
           var.s3_bucket_arn,
           "${var.s3_bucket_arn}/*"
@@ -84,23 +143,19 @@ resource "aws_iam_policy" "lambda_data_access" {
       },
       {
         Effect = "Allow"
-
         Action = [
           "sqs:SendMessage",
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes"
         ]
-
         Resource = [var.ingest_queue_arn]
       },
       {
         Effect = "Allow"
-
         Action = [
           "secretsmanager:GetSecretValue"
         ]
-
         Resource = [
           var.secret_arn
         ]
