@@ -168,12 +168,12 @@ resource "aws_iam_role_policy_attachment" "data_access" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.lambda_data_access.arn
 } 
-resource "aws_iam_role_policy_attachment" "data_access" {
+# resource "aws_iam_role_policy_attachment" "data_access" {
 
-  role = aws_iam_role.lambda_role.name
+#   role = aws_iam_role.lambda_role.name
 
-  policy_arn = aws_iam_policy.lambda_data_access.arn
-}
+#   policy_arn = aws_iam_policy.lambda_data_access.arn
+# }
 
 
 resource "aws_iam_role" "onboard_lambda_role" {
