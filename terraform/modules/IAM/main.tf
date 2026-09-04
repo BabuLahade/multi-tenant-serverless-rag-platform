@@ -125,7 +125,7 @@ resource "aws_iam_policy" "lambda_data_access" {
         ]
         Resource = [
           var.vectors_table_arn,
-          var.configs_table_arn,
+          var.chatbot_configs_table_arn,
           var.sessions_table_arn
         ]
       },
@@ -164,7 +164,10 @@ resource "aws_iam_policy" "lambda_data_access" {
   })
 }
 
-
+resource "aws_iam_role_policy_attachment" "data_access" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_data_access.arn
+} 
 resource "aws_iam_role_policy_attachment" "data_access" {
 
   role = aws_iam_role.lambda_role.name

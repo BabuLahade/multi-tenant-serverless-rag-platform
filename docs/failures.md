@@ -1645,3 +1645,16 @@ S3 event notification was configured but messages were silently dropped.
 **Fix:** Added aws_sqs_queue_policy resource in Terraform granting S3 permission.
 
 **Prevention:** Always test the full pipeline end-to-end after adding event sources..
+
+
+## 2026-09 — nova-authorizer crashed on import
+
+**Symptom:** All API requests returned 500. CloudWatch showed ImportModuleError.
+
+**Root cause:** `from boto3.dynamodb.conditions import Index` — Index does not 
+exist in that module. Wrong import from documentation error.
+
+**Fix:** Removed the import. Used boto3.dynamodb.conditions.Attr directly inline.
+
+**Prevention:** Test Lambda imports locally before deploying. 
+Run `python -c "from boto3.dynamodb.conditions import Index"` to catch this.
