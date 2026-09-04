@@ -20,3 +20,13 @@ output "configs_table_arn" {
 output "sessions_table_arn" {
   value = aws_dynamodb_table.chat_sessions.arn
 }
+
+output "chatbot_configs_table_arn" {
+  value       = aws_dynamodb_table.chatbot_configs.arn
+  description = "The ARN of the chatbot configurations table"
+}
+
+output "chatbot_configs_table_name" {
+  value       = aws_dynamodb_table.chatbot_configs.name
+  description = "The Name of the chatbot configurations table"
+}

@@ -21,3 +21,13 @@ output "dlq_name" {
 output "sqs_queue_url" {
   value = aws_sqs_queue.ingest_queue.url
 }
+
+output "sqs_queue_arn" {
+  value       = aws_sqs_queue.crawl_queue.arn
+  description = "The ARN of the crawl SQS queue"
+}
+
+output "sqs_queue_url" {
+  value       = aws_sqs_queue.crawl_queue.url
+  description = "The URL of the crawl SQS queue"
+}
