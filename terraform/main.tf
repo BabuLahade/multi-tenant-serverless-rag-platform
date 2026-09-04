@@ -62,6 +62,10 @@ module "api_gateway" {
   authorizer_lambda_arn = module.lambda.authorizer_lambda_arn
 
   authorizer_lambda_name = module.lambda.authorizer_lambda_name
+
+  onboard_lambda_invoke_arn = module.lambda.onboard_lambda_invoke_arn
+  onboard_lambda_name = module.lambda.onboard_lambda_name
+  onboard_lambda_arn = module.lambda.onboard_lambda_arn
 }
 
 module "sqs" {
