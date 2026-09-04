@@ -26,7 +26,7 @@ output "chatbot_configs_table_arn" {
   description = "The ARN of the chatbot configurations table"
 }
 
-output "chatbot_configs_table_name" {
-  value       = aws_dynamodb_table.chatbot_configs.name
-  description = "The Name of the chatbot configurations table"
-}
+# output "chatbot_configs_table_name" {
+#   value       = aws_dynamodb_table.chatbot_configs.name
+#   description = "The Name of the chatbot configurations table"
+# }
