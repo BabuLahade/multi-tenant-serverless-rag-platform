@@ -349,7 +349,62 @@
 #         }
 #     }
 
+# import json
+# from rag import ask
+
+# def handler(event, context):
+#     print("===== FULL API EVENT =====")
+#     print(json.dumps(event))
+#     print("==========================")
+
+#     raw_body = event.get("body")
+#     if raw_body is None:
+#         return {
+#             "statusCode": 400,
+#             "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+#             "body": json.dumps({"error": "Request body is required"})
+#         }
+
+#     if event.get("isBase64Encoded"):
+#         import base64
+#         raw_body = base64.b64decode(raw_body).decode("utf-8")
+
+#     try:
+#         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
+#     except (json.JSONDecodeError, TypeError) as e:
+#         return {
+#             "statusCode": 400,
+#             "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+#             "body": json.dumps({"error": "Invalid JSON request body"})
+#         }
+
+#     # MULTI-TENANT SECURITY LOCK: 
+#     # Extract client_id from Authorizer context first. Fallback to body only if local/testing.
+#     authorizer_ctx = event.get("requestContext", {}).get("authorizer") or {}
+#     client_id = authorizer_ctx.get("client_id") or body.get("client_id")
+#     question = body.get("message")
+
+#     if not question or not client_id:
+#         return {
+#             "statusCode": 400,
+#             "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+#             "body": json.dumps({"error": "client_id and message are required"})
+#         }
+
+#     # Query the RAG engine using the securely identified tenant
+#     result = ask(client_id, question)
+
+#     return {
+#         "statusCode": 200,
+#         "headers": {
+#             "Content-Type": "application/json",
+#             "Access-Control-Allow-Origin": "*"
+#         },
+#         "body": json.dumps(result)
+#     }
+
 import json
+import traceback
 from rag import ask
 
 def handler(event, context):
@@ -379,26 +434,48 @@ def handler(event, context):
         }
 
     # MULTI-TENANT SECURITY LOCK: 
-    # Extract client_id from Authorizer context first. Fallback to body only if local/testing.
-    authorizer_ctx = event.get("requestContext", {}).get("authorizer") or {}
-    client_id = authorizer_ctx.get("client_id") or body.get("client_id")
+    # Extract client_id strictly from Authorizer context. Do NOT trust the body.
+    authorizer_ctx = event.get("requestContext", {}).get("authorizer", {})
+    client_id = authorizer_ctx.get("client_id")
+    
+    if not client_id:
+        return {
+            "statusCode": 403,
+            "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+            "body": json.dumps({"error": "Unauthorized: Tenant identity missing from authorization context."})
+        }
+
     question = body.get("message")
 
-    if not question or not client_id:
+    if not question:
         return {
             "statusCode": 400,
             "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-            "body": json.dumps({"error": "client_id and message are required"})
+            "body": json.dumps({"error": "message is required"})
         }
 
-    # Query the RAG engine using the securely identified tenant
-    result = ask(client_id, question)
-
-    return {
-        "statusCode": 200,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-        },
-        "body": json.dumps(result)
-    }
+    try:
+        # Query the RAG engine using the securely identified tenant
+        result = ask(client_id, question)
+        return {
+            "statusCode": 200,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps(result)
+        }
+    except Exception as e:
+        print("CRITICAL RAG ERROR:")
+        traceback.print_exc()
+        return {
+            "statusCode": 400,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps({
+                "error": "Failed to process chat query",
+                "details": str(e)
+            })
+        }
