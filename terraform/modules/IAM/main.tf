@@ -126,7 +126,8 @@ resource "aws_iam_policy" "lambda_data_access" {
         Resource = [
           var.vectors_table_arn,
           var.chatbot_configs_table_arn,
-          var.sessions_table_arn
+          var.sessions_table_arn,
+          var.configs_table_arn
         ]
       },
       {
