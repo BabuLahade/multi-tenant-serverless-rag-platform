@@ -143,7 +143,7 @@ resource "aws_lambda_function" "nova_onboard" {
   
   environment {
     variables = {
-      CONFIGS_TABLE = aws_dynamodb_table.chatbot_configs.name
+      CONFIGS_TABLE = var.chatbot_configs_table_name
       # Replace 'aws_sqs_queue.crawl_queue.url' with your actual SQS URL reference
       SQS_QUEUE_URL = var.sqs_queue_url
        

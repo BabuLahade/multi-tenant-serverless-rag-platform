@@ -136,17 +136,19 @@ resource "aws_iam_role_policy" "onboard_lambda_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
+      # Around line 142
       {
         Effect = "Allow"
         Action = ["dynamodb:PutItem", "dynamodb:GetItem"]
-        Resource = aws_dynamodb_table.chatbot_configs.arn
+        Resource = var.chatbot_configs_table_arn
       },
       {
         Effect = "Allow"
         Action = ["sqs:SendMessage"]
-        # Replace 'aws_sqs_queue.crawl_queue.arn' with the actual reference to your SQS queue in Terraform
-        Resource = aws_sqs_queue.crawl_queue.arn 
+        Resource = var.sqs_queue_arn
       },
+         
+      
       {
         Effect = "Allow"
         Action = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]

@@ -29,3 +29,11 @@ variable "sqs_queue_url" {
 variable "onboard_lambda_role_arn" {
   type = string
 }
+
+variable "chatbot_configs_table_name" {
+  type = string
+}
+
+variable "sqs_queue_url" {
+  type = string
+}

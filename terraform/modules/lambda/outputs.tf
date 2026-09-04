@@ -31,12 +31,12 @@ output "authorizer_lambda_name" {
 }
 
 output "onboard_lambda_arn" {
-  value = aws_lambda_function.onboard.arn
+  value = aws_lambda_function.nova_onboard.arn
 }
 output "onboard_lambda_invoke_arn" {
-  value = aws_lambda_function.onboard.invoke_arn
+  value = aws_lambda_function.nova_onboard.invoke_arn
 }
 
 output "onboard_lambda_name" {
-  value = aws_lambda_function.onboard.function_name
+  value = aws_lambda_function.nova_onboard.function_name
 }

@@ -32,6 +32,8 @@ module "iam" {
   s3_bucket_arn      = module.raw_content_bucket.bucket_arn
   secret_arn         = module.secrets_manager.secret_arn
   ingest_queue_arn   = module.sqs.ingest_queue_arn
+  chatbot_configs_table_arn = module.dynamodb.chatbot_configs_table_arn
+  sqs_queue_arn = module.sqs.sqs_queue_arn
 }
 
 
@@ -45,6 +47,7 @@ module "lambda" {
   ingest_queue_arn = module.sqs.ingest_queue_arn
   sqs_queue_url = module.sqs.sqs_queue_url
   onboard_lambda_role_arn = module.iam.onboard_lambda_role_arn
+  chatbot_configs_table_name = module.dynamodb.chatbot_configs_table_name
 
 }
 
