@@ -196,7 +196,22 @@ resource "aws_cloudwatch_metric_alarm" "chat_errors" {
   alarm_actions       = [aws_sns_topic.nova_alerts.arn]
   ok_actions          = [aws_sns_topic.nova_alerts.arn]
 }
-
+resource "aws_cloudwatch_metric_alarm" "ingest_errors" {
+  alarm_name          = "nova-ingest-errors"
+  namespace           = "AWS/Lambda"
+  metric_name         = "Errors"
+  dimensions = {
+    FunctionName = var.ingest_lambda_name
+  }
+  statistic           = "Sum"
+  period              = 60
+  evaluation_periods  = 1
+  threshold           = 0
+  comparison_operator = "GreaterThanThreshold"
+  alarm_description   = "Triggered when background crawler/ingest Lambda errors out."
+  alarm_actions       = [aws_sns_topic.nova_alerts.arn]
+  ok_actions          = [aws_sns_topic.nova_alerts.arn]
+}
 resource "aws_cloudwatch_metric_alarm" "queue_age" {
 
   alarm_name = "nova-queue-age"
