@@ -176,7 +176,7 @@ dynamodb = boto3.resource(
 )
 
 table = dynamodb.Table(
-    os.environ.get("CONFIGS_TABLE", "chatbot_configs")
+    os.environ.get("CONFIGS_TABLE", "nova-chatbot-configs")
 )
 
 
