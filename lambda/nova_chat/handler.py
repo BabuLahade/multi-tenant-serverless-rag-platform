@@ -478,18 +478,161 @@
 #                 "error": "Failed to process chat query",
 #                 "details": str(e)
 #             })
+# #         }
+
+# import json
+# from rag import ask
+
+# import time
+
+# def log_tenant_metric(client_id: str, metric_name: str, value: float, unit: str = "Count"):
+#     """
+#     Emits CloudWatch Embedded Metric Format (EMF) directly to stdout.
+#     CloudWatch parses this asynchronously with 0ms added latency.
+#     """
+#     emf_payload = {
+#         "_aws": {
+#             "Timestamp": int(time.time() * 1000),
+#             "CloudWatchMetrics": [
+#                 {
+#                     "Namespace": "NovaRAG/Tenants",
+#                     "Dimensions": [["TenantId"]],
+#                     "Metrics": [{"Name": metric_name, "Unit": unit}]
+#                 }
+#             ]
+#         },
+#         "TenantId": client_id,
+#         metric_name: value
+#     }
+#     print(json.dumps(emf_payload))
+
+# def handler(event, context):
+#     print("===== EVENT =====")
+#     print(json.dumps(event))
+
+#     # client_id comes from Lambda Authorizer context only
+#     # Never trust client-supplied client_id
+#     authorizer_ctx = event.get("requestContext", {}).get("authorizer") or {}
+#     client_id = authorizer_ctx.get("client_id")
+
+#     if not client_id:
+#         return {
+#             "statusCode": 401,
+#             "headers": {
+#                 "Content-Type": "application/json",
+#                 "Access-Control-Allow-Origin": "*"
+#             },
+#             "body": json.dumps({"error": "Unauthorized — no client context"})
 #         }
 
+#     raw_body = event.get("body")
+
+#     if raw_body is None:
+#         return {
+#             "statusCode": 400,
+#             "headers": {
+#                 "Content-Type": "application/json",
+#                 "Access-Control-Allow-Origin": "*"
+#             },
+#             "body": json.dumps({"error": "Request body is required"})
+#         }
+
+#     if event.get("isBase64Encoded"):
+#         import base64
+#         raw_body = base64.b64decode(raw_body).decode("utf-8")
+
+#     try:
+#         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
+#     except (json.JSONDecodeError, TypeError):
+#         return {
+#             "statusCode": 400,
+#             "headers": {
+#                 "Content-Type": "application/json",
+#                 "Access-Control-Allow-Origin": "*"
+#             },
+#             "body": json.dumps({"error": "Invalid JSON request body"})
+#         }
+
+#     question = body.get("message", "").strip()
+
+#     if not question:
+#         return {
+#             "statusCode": 400,
+#             "headers": {
+#                 "Content-Type": "application/json",
+#                 "Access-Control-Allow-Origin": "*"
+#             },
+#             "body": json.dumps({"error": "message is required"})
+#         }
+
+#     result = ask(client_id, question)
+
+#     return {
+#         "statusCode": 200,
+#         "headers": {
+#             "Content-Type": "application/json",
+#             "Access-Control-Allow-Origin": "*"
+#         },
+#         "body": json.dumps(result)
+#     }
+# def handler(event, context):
+#     start_time = time.time()
+    
+#     # Extract client_id resolved by the custom authorizer
+#     client_id = event.get("requestContext", {}).get("authorizer", {}).get("client_id", "anonymous")
+    
+#     # 1. Track Invocation per Tenant
+#     log_tenant_metric(client_id, "Invocations", 1, "Count")
+    
+#     try:
+#         # ... (Your existing RAG retrieval and LLM call logic) ...
+        
+#         # Calculate execution latency
+#         latency_ms = (time.time() - start_time) * 1000
+#         log_tenant_metric(client_id, "LatencyMs", latency_ms, "Milliseconds")
+        
+#         # Optional: Track approximate token usage if available from your model response
+#         # log_tenant_metric(client_id, "TokenUsage", token_count, "Count")
+        
+#         return response
+        
+#     except Exception as e:
+#         # Track Error per Tenant
+#         log_tenant_metric(client_id, "Errors", 1, "Count")
+#         raise e
+
+import base64
 import json
+import time
 from rag import ask
 
+def log_tenant_metric(client_id: str, metric_name: str, value: float, unit: str = "Count"):
+    """
+    Emits CloudWatch Embedded Metric Format (EMF) directly to stdout.
+    CloudWatch parses this asynchronously with 0ms added latency.
+    """
+    emf_payload = {
+        "_aws": {
+            "Timestamp": int(time.time() * 1000),
+            "CloudWatchMetrics": [
+                {
+                    "Namespace": "NovaRAG/Tenants",
+                    "Dimensions": [["TenantId"]],
+                    "Metrics": [{"Name": metric_name, "Unit": unit}]
+                }
+            ]
+        },
+        "TenantId": client_id,
+        metric_name: value
+    }
+    print(json.dumps(emf_payload))
 
 def handler(event, context):
+    start_time = time.time()
     print("===== EVENT =====")
     print(json.dumps(event))
 
     # client_id comes from Lambda Authorizer context only
-    # Never trust client-supplied client_id
     authorizer_ctx = event.get("requestContext", {}).get("authorizer") or {}
     client_id = authorizer_ctx.get("client_id")
 
@@ -502,6 +645,9 @@ def handler(event, context):
             },
             "body": json.dumps({"error": "Unauthorized — no client context"})
         }
+
+    # 1. Track invocation metric per tenant
+    log_tenant_metric(client_id, "Invocations", 1, "Count")
 
     raw_body = event.get("body")
 
@@ -516,7 +662,6 @@ def handler(event, context):
         }
 
     if event.get("isBase64Encoded"):
-        import base64
         raw_body = base64.b64decode(raw_body).decode("utf-8")
 
     try:
@@ -543,13 +688,24 @@ def handler(event, context):
             "body": json.dumps({"error": "message is required"})
         }
 
-    result = ask(client_id, question)
+    try:
+        # Execute RAG query against tenant-partitioned vectors
+        result = ask(client_id, question)
 
-    return {
-        "statusCode": 200,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-        },
-        "body": json.dumps(result)
-    }
+        # 2. Track execution latency per tenant
+        latency_ms = (time.time() - start_time) * 1000
+        log_tenant_metric(client_id, "LatencyMs", latency_ms, "Milliseconds")
+
+        return {
+            "statusCode": 200,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps(result)
+        }
+
+    except Exception as e:
+        # 3. Track errors per tenant
+        log_tenant_metric(client_id, "Errors", 1, "Count")
+        raise e
