@@ -104,6 +104,13 @@ jobs:
 
           cd build/authorizer
           zip -r ../../lambda/packages/nova-authorizer.zip .
+
+      - name: Build Onboard Package
+        run: |
+          mkdir -p build/onboard
+          cp -r lambda/nova_onboard/* build/onboard/
+          cd build/onboard
+          zip -r ../../lambda/packages/nova-onboard.zip .
       - name: Show package sizes
         run: |
           du -sh lambda/packages/*

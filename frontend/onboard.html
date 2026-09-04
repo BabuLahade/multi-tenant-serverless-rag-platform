@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova — Get Your Chatbot</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .container {
+      width: 100%;
+      max-width: 520px;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    p.sub {
+      text-align: center;
+      color: #94a3b8;
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+    .form {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    label {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      display: block;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      outline: none;
+    }
+    input:focus, textarea:focus {
+      border-color: #2563eb;
+    }
+    textarea { resize: vertical; height: 80px; }
+    button {
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    button:disabled { opacity: 0.5; cursor: default; }
+    .result {
+      display: none;
+      margin-top: 24px;
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .result h2 {
+      font-size: 18px;
+      color: #4ade80;
+      margin-bottom: 16px;
+    }
+    .snippet-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #93c5fd;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-bottom: 12px;
+    }
+    .copy-btn {
+      padding: 8px 16px;
+      background: #334155;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .error {
+      color: #f87171;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🚀 Get Your AI Chatbot</h1>
+  <p class="sub">Enter your website URL and get a chatbot in 60 seconds</p>
+
+  <div class="form">
+    <div>
+      <label>Client ID (unique name, no spaces)</label>
+      <input id="client_id" type="text" placeholder="e.g. mycompany" />
+    </div>
+    <div>
+      <label>Website URL</label>
+      <input id="site_url" type="text" placeholder="https://yourwebsite.com" />
+    </div>
+    <div>
+      <label>Bot Name</label>
+      <input id="bot_name" type="text" placeholder="e.g. SupportBot" />
+    </div>
+    <div>
+      <label>Brand Color</label>
+      <input id="brand_color" type="color" value="#2563eb" />
+    </div>
+    <div>
+      <label>System Prompt (optional)</label>
+      <textarea id="system_prompt" placeholder="You are a helpful assistant for..."></textarea>
+    </div>
+    <button id="submitBtn" onclick="onboard()">Get My Chatbot →</button>
+    <div id="error" class="error"></div>
+  </div>
+
+  <div class="result" id="result">
+    <h2>✅ Your chatbot is ready!</h2>
+    <p style="color:#94a3b8;font-size:13px;margin-bottom:12px;">
+      Paste this snippet inside the &lt;body&gt; tag of your website:
+    </p>
+    <div class="snippet-box" id="snippet"></div>
+    <button class="copy-btn" onclick="copySnippet()">📋 Copy Snippet</button>
+    <p style="color:#94a3b8;font-size:12px;margin-top:12px;">
+      Your site is being crawled in the background. The bot will be ready in ~60 seconds.
+    </p>
+  </div>
+</div>
+
+<script>
+const API = "https://dh90wd8pxc.execute-api.ap-south-1.amazonaws.com/dev/onboard";
+
+async function onboard() {
+  const btn = document.getElementById("submitBtn");
+  const err = document.getElementById("error");
+  err.innerText = "";
+
+  const client_id    = document.getElementById("client_id").value.trim();
+  const site_url     = document.getElementById("site_url").value.trim();
+  const bot_name     = document.getElementById("bot_name").value.trim() || "Nova AI";
+  const brand_color  = document.getElementById("brand_color").value;
+  const system_prompt = document.getElementById("system_prompt").value.trim();
+
+  if (!client_id || !site_url) {
+    err.innerText = "Client ID and Website URL are required.";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerText = "Setting up your bot...";
+
+  try {
+    const res = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        client_id,
+        site_url,
+        bot_name,
+        brand_color,
+        system_prompt
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      err.innerText = data.error || "Something went wrong.";
+      return;
+    }
+
+    document.getElementById("snippet").innerText = data.snippet;
+    document.getElementById("result").style.display = "block";
+    document.getElementById("result").scrollIntoView({ behavior: "smooth" });
+
+  } catch (e) {
+    err.innerText = "Unable to reach server. Check your connection.";
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "Get My Chatbot →";
+  }
+}
+
+function copySnippet() {
+  const text = document.getElementById("snippet").innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    document.querySelector(".copy-btn").innerText = "✅ Copied!";
+    setTimeout(() => {
+      document.querySelector(".copy-btn").innerText = "📋 Copy Snippet";
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>

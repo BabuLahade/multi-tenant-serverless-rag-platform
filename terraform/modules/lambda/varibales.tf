@@ -25,3 +25,7 @@ variable "ingest_queue_arn" {
 variable "sqs_queue_url" {
   type = string
 }
+
+variable "onboard_lambda_role_arn" {
+  type = string
+}

@@ -2,13 +2,15 @@
 
   // ── Config injected by the script tag ──────────────────────
   const script = document.currentScript;
-  const CLIENT_ID  = script.getAttribute("data-client-id");
+//   const CLIENT_ID  = script.getAttribute("data-client-id");
   const API_KEY    = script.getAttribute("data-api-key");
   const BOT_NAME   = script.getAttribute("data-bot-name")   || "Nova AI";
   const BRAND      = script.getAttribute("data-brand-color") || "#2563eb";
   const API_URL    = script.getAttribute("data-api-url")     ||
     "https://dh90wd8pxc.execute-api.ap-south-1.amazonaws.com/dev/chat";
-
+  if (!API_KEY) {
+  console.error("Nova Widget: missing data-api-key on script tag.");
+    }
   // ── Inject CSS ─────────────────────────────────────────────
   const style = document.createElement("style");
   style.textContent = `
@@ -196,7 +198,7 @@
           "x-api-key": API_KEY
         },
         body: JSON.stringify({
-          client_id: CLIENT_ID,
+        //   client_id: CLIENT_ID,
           message: question
         })
       });

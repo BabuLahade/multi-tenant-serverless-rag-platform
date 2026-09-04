@@ -21,3 +21,14 @@ variable "authorizer_lambda_arn" {
 variable "authorizer_lambda_name" {
   type = string
 }
+
+variable "onboard_lambda_arn" {
+  type = string
+}
+
+variable "onboard_lambda_invoke_arn" {
+  type = string
+}
+variable "onboard_lambda_name" {
+  type = string
+}

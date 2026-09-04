@@ -1,230 +1,3 @@
-# # import json
-# # from rag import ask
-
-# # def handler(event, context):
-# #     print("===== FULL API EVENT =====")
-# #     print(json.dumps(event))
-# #     print("==========================")
-
-# #     raw_body = event.get("body")
-
-# #     print("===== RAW BODY =====")
-# #     print(repr(raw_body))
-# #     print("====================")
-# #     print("isBase64Encoded =", event.get("isBase64Encoded"))
-
-# #     if raw_body is None:
-# #         return {
-# #             "statusCode": 400,
-# #             "headers": {
-# #                 "Content-Type": "application/json",
-# #                 "Access-Control-Allow-Origin": "*"
-# #             },
-# #             "body": json.dumps({"error": "Request body is required"})
-# #         }
-
-# #     if event.get("isBase64Encoded"):
-# #         import base64
-# #         raw_body = base64.b64decode(raw_body).decode("utf-8")
-
-# #     try:
-# #         # Handling both pre-parsed dicts and raw strings
-# #         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
-# #     except (json.JSONDecodeError, TypeError) as e:
-# #         print(f"===== PARSE ERROR =====\n{str(e)}")
-# #         return {
-# #             "statusCode": 400,
-# #             "headers": {
-# #                 "Content-Type": "application/json",
-# #                 "Access-Control-Allow-Origin": "*"
-# #             },
-# #             "body": json.dumps({"error": "Invalid JSON request body"})
-# #         }
-
-# #     # Extract client_id from Authorizer context first, fallback to body if running locally/testing
-# #     authorizer_ctx = event.get("requestContext", {}).get("authorizer") or {}
-# #     client_id = authorizer_ctx.get("client_id") or body.get("client_id")
-# #     question = body.get("message")
-
-# #     if not question or not client_id:
-# #         return {
-# #             "statusCode": 400,
-# #             "headers": {
-# #                 "Content-Type": "application/json",
-# #                 "Access-Control-Allow-Origin": "*"
-# #             },
-# #             "body": json.dumps({"error": "client_id and message are required"})
-# #         }
-
-# #     result = ask(client_id, question)
-
-# #     return {
-# #         "statusCode": 200,
-# #         "headers": {
-# #             "Content-Type": "application/json",
-# #             "Access-Control-Allow-Origin": "*"
-# #         },
-# #         "body": json.dumps(result)
-# #     }
-
-
-
-
-
-# # # # # # import json
-
-# # # # # # from rag import ask
-
-
-# # # # # # def handler(event, context):
-
-# # # # # #     body = json.loads(
-# # # # # #         event["body"]
-# # # # # #     )
-
-# # # # # #     question = body["message"]
-
-# # # # # #     client_id = body["client_id"]
-
-# # # # # #     result = ask(
-# # # # # #         client_id,
-# # # # # #         question
-# # # # # #     )
-
-# # # # # #     return {
-# # # # # #         "statusCode": 200,
-
-# # # # # #         "headers": {
-# # # # # #             "Content-Type":
-# # # # # #             "application/json"
-# # # # # #         },
-
-# # # # # #         "body": json.dumps(result)
-# # # # # #     }   
-# # # # # import json
-
-# # # # # from rag import ask
-
-
-# # # # # def handler(event, context):
-
-# # # # #     # print("===== EVENT =====")
-# # # # #     # print(json.dumps(event))
-# # # # #     # print("=================")
-
-# # # # #     raw_body = event.get("body")
-
-# # # # #     if raw_body is None:
-# # # # #         return {
-# # # # #             "statusCode": 400,
-# # # # #             "headers": {
-# # # # #                 "Content-Type": "application/json"
-# # # # #             },
-# # # # #             "body": json.dumps({
-# # # # #                 "error": "Request body is required"
-# # # # #             })
-# # # # #         }
-
-# # # # #     if event.get("isBase64Encoded"):
-# # # # #         import base64
-# # # # #         raw_body = base64.b64decode(raw_body).decode("utf-8")
-
-# # # # #     try:
-# # # # #         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
-# # # # #     except (json.JSONDecodeError, TypeError):
-# # # # #         return {
-# # # # #             "statusCode": 400,
-# # # # #             "headers": {
-# # # # #                 "Content-Type": "application/json"
-# # # # #             },
-# # # # #             "body": json.dumps({
-# # # # #                 "error": "Invalid JSON request body"
-# # # # #             })
-# # # # #         }
-
-# # # # #     question = body.get("message")
-# # # # #     client_id = body.get("client_id")
-
-# # # # #     if not question or not client_id:
-# # # # #         return {
-# # # # #             "statusCode": 400,
-# # # # #             "headers": {
-# # # # #                 "Content-Type": "application/json"
-# # # # #             },
-# # # # #             "body": json.dumps({
-# # # # #                 "error": "client_id and message are required"
-# # # # #             })
-# # # # #         }
-
-# # # # #     result = ask(
-# # # # #         client_id,
-# # # # #         question
-# # # # #     )
-
-# # # # #     return {
-# # # # #         "statusCode": 200,
-# # # # #         "headers": {
-# # # # #             "Content-Type": "application/json"
-# # # # #         },
-# # # # #         "body": json.dumps(result)
-# # # # #     }
-
-# # # # import json
-# # # # from rag import ask
-
-# # # # def handler(event, context):
-# # # #     print("===== FULL API EVENT =====")
-# # # #     print(json.dumps(event))
-# # # #     print("==========================")
-
-# # # #     raw_body = event.get("body")
-
-# # # #     print("===== RAW BODY =====")
-# # # #     print(repr(raw_body))
-# # # #     print("====================")
-# # # #     print("isBase64Encoded =", event.get("isBase64Encoded"))
-
-# # # #     if raw_body is None:
-# # # #         return {
-# # # #             "statusCode": 400,
-# # # #             "headers": {"Content-Type": "application/json"},
-# # # #             "body": json.dumps({"error": "Request body is required"})
-# # # #         }
-
-# # # #     if event.get("isBase64Encoded"):
-# # # #         import base64
-# # # #         raw_body = base64.b64decode(raw_body).decode("utf-8")
-
-# # # #     try:
-# # # #         # Handling both pre-parsed dicts and raw strings
-# # # #         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
-# # # #     except (json.JSONDecodeError, TypeError) as e:
-# # # #         print(f"===== PARSE ERROR =====\n{str(e)}")
-# # # #         return {
-# # # #             "statusCode": 400,
-# # # #             "headers": {"Content-Type": "application/json"},
-# # # #             "body": json.dumps({"error": "Invalid JSON request body"})
-# # # #         }
-
-# # # #     question = body.get("message")
-# # # #     client_id = body.get("client_id")
-
-# # # #     if not question or not client_id:
-# # # #         return {
-# # # #             "statusCode": 400,
-# # # #             "headers": {"Content-Type": "application/json"},
-# # # #             "body": json.dumps({"error": "client_id and message are required"})
-# # # #         }
-
-# # # #     result = ask(client_id, question)
-
-# # # #     return {
-# # # #         "statusCode": 200,
-# # # #         "headers": {"Content-Type": "application/json"},
-# # # #         "body": json.dumps(result)
-# # # #     }
-
-
 # # # import json
 # # # from rag import ask
 
@@ -268,8 +41,10 @@
 # # #             "body": json.dumps({"error": "Invalid JSON request body"})
 # # #         }
 
+# # #     # Extract client_id from Authorizer context first, fallback to body if running locally/testing
+# # #     authorizer_ctx = event.get("requestContext", {}).get("authorizer") or {}
+# # #     client_id = authorizer_ctx.get("client_id") or body.get("client_id")
 # # #     question = body.get("message")
-# # #     client_id = body.get("client_id")
 
 # # #     if not question or not client_id:
 # # #         return {
@@ -293,63 +68,343 @@
 # # #     }
 
 
+
+
+
+# # # # # # # import json
+
+# # # # # # # from rag import ask
+
+
+# # # # # # # def handler(event, context):
+
+# # # # # # #     body = json.loads(
+# # # # # # #         event["body"]
+# # # # # # #     )
+
+# # # # # # #     question = body["message"]
+
+# # # # # # #     client_id = body["client_id"]
+
+# # # # # # #     result = ask(
+# # # # # # #         client_id,
+# # # # # # #         question
+# # # # # # #     )
+
+# # # # # # #     return {
+# # # # # # #         "statusCode": 200,
+
+# # # # # # #         "headers": {
+# # # # # # #             "Content-Type":
+# # # # # # #             "application/json"
+# # # # # # #         },
+
+# # # # # # #         "body": json.dumps(result)
+# # # # # # #     }   
+# # # # # # import json
+
+# # # # # # from rag import ask
+
+
+# # # # # # def handler(event, context):
+
+# # # # # #     # print("===== EVENT =====")
+# # # # # #     # print(json.dumps(event))
+# # # # # #     # print("=================")
+
+# # # # # #     raw_body = event.get("body")
+
+# # # # # #     if raw_body is None:
+# # # # # #         return {
+# # # # # #             "statusCode": 400,
+# # # # # #             "headers": {
+# # # # # #                 "Content-Type": "application/json"
+# # # # # #             },
+# # # # # #             "body": json.dumps({
+# # # # # #                 "error": "Request body is required"
+# # # # # #             })
+# # # # # #         }
+
+# # # # # #     if event.get("isBase64Encoded"):
+# # # # # #         import base64
+# # # # # #         raw_body = base64.b64decode(raw_body).decode("utf-8")
+
+# # # # # #     try:
+# # # # # #         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
+# # # # # #     except (json.JSONDecodeError, TypeError):
+# # # # # #         return {
+# # # # # #             "statusCode": 400,
+# # # # # #             "headers": {
+# # # # # #                 "Content-Type": "application/json"
+# # # # # #             },
+# # # # # #             "body": json.dumps({
+# # # # # #                 "error": "Invalid JSON request body"
+# # # # # #             })
+# # # # # #         }
+
+# # # # # #     question = body.get("message")
+# # # # # #     client_id = body.get("client_id")
+
+# # # # # #     if not question or not client_id:
+# # # # # #         return {
+# # # # # #             "statusCode": 400,
+# # # # # #             "headers": {
+# # # # # #                 "Content-Type": "application/json"
+# # # # # #             },
+# # # # # #             "body": json.dumps({
+# # # # # #                 "error": "client_id and message are required"
+# # # # # #             })
+# # # # # #         }
+
+# # # # # #     result = ask(
+# # # # # #         client_id,
+# # # # # #         question
+# # # # # #     )
+
+# # # # # #     return {
+# # # # # #         "statusCode": 200,
+# # # # # #         "headers": {
+# # # # # #             "Content-Type": "application/json"
+# # # # # #         },
+# # # # # #         "body": json.dumps(result)
+# # # # # #     }
+
+# # # # # import json
+# # # # # from rag import ask
+
+# # # # # def handler(event, context):
+# # # # #     print("===== FULL API EVENT =====")
+# # # # #     print(json.dumps(event))
+# # # # #     print("==========================")
+
+# # # # #     raw_body = event.get("body")
+
+# # # # #     print("===== RAW BODY =====")
+# # # # #     print(repr(raw_body))
+# # # # #     print("====================")
+# # # # #     print("isBase64Encoded =", event.get("isBase64Encoded"))
+
+# # # # #     if raw_body is None:
+# # # # #         return {
+# # # # #             "statusCode": 400,
+# # # # #             "headers": {"Content-Type": "application/json"},
+# # # # #             "body": json.dumps({"error": "Request body is required"})
+# # # # #         }
+
+# # # # #     if event.get("isBase64Encoded"):
+# # # # #         import base64
+# # # # #         raw_body = base64.b64decode(raw_body).decode("utf-8")
+
+# # # # #     try:
+# # # # #         # Handling both pre-parsed dicts and raw strings
+# # # # #         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
+# # # # #     except (json.JSONDecodeError, TypeError) as e:
+# # # # #         print(f"===== PARSE ERROR =====\n{str(e)}")
+# # # # #         return {
+# # # # #             "statusCode": 400,
+# # # # #             "headers": {"Content-Type": "application/json"},
+# # # # #             "body": json.dumps({"error": "Invalid JSON request body"})
+# # # # #         }
+
+# # # # #     question = body.get("message")
+# # # # #     client_id = body.get("client_id")
+
+# # # # #     if not question or not client_id:
+# # # # #         return {
+# # # # #             "statusCode": 400,
+# # # # #             "headers": {"Content-Type": "application/json"},
+# # # # #             "body": json.dumps({"error": "client_id and message are required"})
+# # # # #         }
+
+# # # # #     result = ask(client_id, question)
+
+# # # # #     return {
+# # # # #         "statusCode": 200,
+# # # # #         "headers": {"Content-Type": "application/json"},
+# # # # #         "body": json.dumps(result)
+# # # # #     }
+
+
+# # # # import json
+# # # # from rag import ask
+
+# # # # def handler(event, context):
+# # # #     print("===== FULL API EVENT =====")
+# # # #     print(json.dumps(event))
+# # # #     print("==========================")
+
+# # # #     raw_body = event.get("body")
+
+# # # #     print("===== RAW BODY =====")
+# # # #     print(repr(raw_body))
+# # # #     print("====================")
+# # # #     print("isBase64Encoded =", event.get("isBase64Encoded"))
+
+# # # #     if raw_body is None:
+# # # #         return {
+# # # #             "statusCode": 400,
+# # # #             "headers": {
+# # # #                 "Content-Type": "application/json",
+# # # #                 "Access-Control-Allow-Origin": "*"
+# # # #             },
+# # # #             "body": json.dumps({"error": "Request body is required"})
+# # # #         }
+
+# # # #     if event.get("isBase64Encoded"):
+# # # #         import base64
+# # # #         raw_body = base64.b64decode(raw_body).decode("utf-8")
+
+# # # #     try:
+# # # #         # Handling both pre-parsed dicts and raw strings
+# # # #         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
+# # # #     except (json.JSONDecodeError, TypeError) as e:
+# # # #         print(f"===== PARSE ERROR =====\n{str(e)}")
+# # # #         return {
+# # # #             "statusCode": 400,
+# # # #             "headers": {
+# # # #                 "Content-Type": "application/json",
+# # # #                 "Access-Control-Allow-Origin": "*"
+# # # #             },
+# # # #             "body": json.dumps({"error": "Invalid JSON request body"})
+# # # #         }
+
+# # # #     question = body.get("message")
+# # # #     client_id = body.get("client_id")
+
+# # # #     if not question or not client_id:
+# # # #         return {
+# # # #             "statusCode": 400,
+# # # #             "headers": {
+# # # #                 "Content-Type": "application/json",
+# # # #                 "Access-Control-Allow-Origin": "*"
+# # # #             },
+# # # #             "body": json.dumps({"error": "client_id and message are required"})
+# # # #         }
+
+# # # #     result = ask(client_id, question)
+
+# # # #     return {
+# # # #         "statusCode": 200,
+# # # #         "headers": {
+# # # #             "Content-Type": "application/json",
+# # # #             "Access-Control-Allow-Origin": "*"
+# # # #         },
+# # # #         "body": json.dumps(result)
+# # # #     }
+
+
+# # import json
+
+# # VALID_KEYS = {
+# #     "fintech-key": "fintech",
+# #     "healthcare-key": "healthcare",
+# #     "store-key": "store"
+# # }
+
+# # def handler(event, context):
+# #     print("AUTHORIZE EVENT:")
+# #     print(json.dumps(event))
+
+# #     headers = event.get("headers") or {}
+
+# #     api_key = (
+# #         headers.get("x-api-key")
+# #         or headers.get("X-Api-Key")
+# #         or headers.get("X-API-Key")
+# #     )
+
+# #     method_arn = event.get("methodArn", "*")
+
+# #     if api_key not in VALID_KEYS:
+# #         return {
+# #             "principalId": "unauthorized",
+# #             "policyDocument": {
+# #                 "Version": "2012-10-17",
+# #                 "Statement": [
+# #                     {
+# #                         "Action": "execute-api:Invoke",
+# #                         "Effect": "Deny",
+# #                         "Resource": method_arn
+# #                     }
+# #                 ]
+# #             }
+# #         }
+
+# #     client_id = VALID_KEYS[api_key]
+
+# #     return {
+# #         "principalId": client_id,
+# #         "policyDocument": {
+# #             "Version": "2012-10-17",
+# #             "Statement": [
+# #                 {
+# #                     "Action": "execute-api:Invoke",
+# #                     "Effect": "Allow",  # Must be explicitly defined
+# #                     "Resource": method_arn
+# #                 }
+# #             ]
+# #         },
+# #         "context": {
+# #             "client_id": client_id
+# #         }
+# #     }
+
+# # import json
+# # from rag import ask
+
+# # def handler(event, context):
+# #     print("===== FULL API EVENT =====")
+# #     print(json.dumps(event))
+# #     print("==========================")
+
+# #     raw_body = event.get("body")
+# #     if raw_body is None:
+# #         return {
+# #             "statusCode": 400,
+# #             "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+# #             "body": json.dumps({"error": "Request body is required"})
+# #         }
+
+# #     if event.get("isBase64Encoded"):
+# #         import base64
+# #         raw_body = base64.b64decode(raw_body).decode("utf-8")
+
+# #     try:
+# #         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
+# #     except (json.JSONDecodeError, TypeError) as e:
+# #         return {
+# #             "statusCode": 400,
+# #             "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+# #             "body": json.dumps({"error": "Invalid JSON request body"})
+# #         }
+
+# #     # MULTI-TENANT SECURITY LOCK: 
+# #     # Extract client_id from Authorizer context first. Fallback to body only if local/testing.
+# #     authorizer_ctx = event.get("requestContext", {}).get("authorizer") or {}
+# #     client_id = authorizer_ctx.get("client_id") or body.get("client_id")
+# #     question = body.get("message")
+
+# #     if not question or not client_id:
+# #         return {
+# #             "statusCode": 400,
+# #             "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+# #             "body": json.dumps({"error": "client_id and message are required"})
+# #         }
+
+# #     # Query the RAG engine using the securely identified tenant
+# #     result = ask(client_id, question)
+
+# #     return {
+# #         "statusCode": 200,
+# #         "headers": {
+# #             "Content-Type": "application/json",
+# #             "Access-Control-Allow-Origin": "*"
+# #         },
+# #         "body": json.dumps(result)
+# #     }
+
 # import json
-
-# VALID_KEYS = {
-#     "fintech-key": "fintech",
-#     "healthcare-key": "healthcare",
-#     "store-key": "store"
-# }
-
-# def handler(event, context):
-#     print("AUTHORIZE EVENT:")
-#     print(json.dumps(event))
-
-#     headers = event.get("headers") or {}
-
-#     api_key = (
-#         headers.get("x-api-key")
-#         or headers.get("X-Api-Key")
-#         or headers.get("X-API-Key")
-#     )
-
-#     method_arn = event.get("methodArn", "*")
-
-#     if api_key not in VALID_KEYS:
-#         return {
-#             "principalId": "unauthorized",
-#             "policyDocument": {
-#                 "Version": "2012-10-17",
-#                 "Statement": [
-#                     {
-#                         "Action": "execute-api:Invoke",
-#                         "Effect": "Deny",
-#                         "Resource": method_arn
-#                     }
-#                 ]
-#             }
-#         }
-
-#     client_id = VALID_KEYS[api_key]
-
-#     return {
-#         "principalId": client_id,
-#         "policyDocument": {
-#             "Version": "2012-10-17",
-#             "Statement": [
-#                 {
-#                     "Action": "execute-api:Invoke",
-#                     "Effect": "Allow",  # Must be explicitly defined
-#                     "Resource": method_arn
-#                 }
-#             ]
-#         },
-#         "context": {
-#             "client_id": client_id
-#         }
-#     }
-
-# import json
+# import traceback
 # from rag import ask
 
 # def handler(event, context):
@@ -379,44 +434,84 @@
 #         }
 
 #     # MULTI-TENANT SECURITY LOCK: 
-#     # Extract client_id from Authorizer context first. Fallback to body only if local/testing.
-#     authorizer_ctx = event.get("requestContext", {}).get("authorizer") or {}
-#     client_id = authorizer_ctx.get("client_id") or body.get("client_id")
+#     # Extract client_id strictly from Authorizer context. Do NOT trust the body.
+#     authorizer_ctx = event.get("requestContext", {}).get("authorizer", {})
+#     client_id = authorizer_ctx.get("client_id")
+    
+#     if not client_id:
+#         return {
+#             "statusCode": 403,
+#             "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+#             "body": json.dumps({"error": "Unauthorized: Tenant identity missing from authorization context."})
+#         }
+
 #     question = body.get("message")
 
-#     if not question or not client_id:
+#     if not question:
 #         return {
 #             "statusCode": 400,
 #             "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-#             "body": json.dumps({"error": "client_id and message are required"})
+#             "body": json.dumps({"error": "message is required"})
 #         }
 
-#     # Query the RAG engine using the securely identified tenant
-#     result = ask(client_id, question)
-
-#     return {
-#         "statusCode": 200,
-#         "headers": {
-#             "Content-Type": "application/json",
-#             "Access-Control-Allow-Origin": "*"
-#         },
-#         "body": json.dumps(result)
-#     }
+#     try:
+#         # Query the RAG engine using the securely identified tenant
+#         result = ask(client_id, question)
+#         return {
+#             "statusCode": 200,
+#             "headers": {
+#                 "Content-Type": "application/json",
+#                 "Access-Control-Allow-Origin": "*"
+#             },
+#             "body": json.dumps(result)
+#         }
+#     except Exception as e:
+#         print("CRITICAL RAG ERROR:")
+#         traceback.print_exc()
+#         return {
+#             "statusCode": 400,
+#             "headers": {
+#                 "Content-Type": "application/json",
+#                 "Access-Control-Allow-Origin": "*"
+#             },
+#             "body": json.dumps({
+#                 "error": "Failed to process chat query",
+#                 "details": str(e)
+#             })
+#         }
 
 import json
-import traceback
 from rag import ask
 
+
 def handler(event, context):
-    print("===== FULL API EVENT =====")
+    print("===== EVENT =====")
     print(json.dumps(event))
-    print("==========================")
+
+    # client_id comes from Lambda Authorizer context only
+    # Never trust client-supplied client_id
+    authorizer_ctx = event.get("requestContext", {}).get("authorizer") or {}
+    client_id = authorizer_ctx.get("client_id")
+
+    if not client_id:
+        return {
+            "statusCode": 401,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps({"error": "Unauthorized — no client context"})
+        }
 
     raw_body = event.get("body")
+
     if raw_body is None:
         return {
             "statusCode": 400,
-            "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
             "body": json.dumps({"error": "Request body is required"})
         }
 
@@ -426,56 +521,35 @@ def handler(event, context):
 
     try:
         body = raw_body if isinstance(raw_body, dict) else json.loads(raw_body)
-    except (json.JSONDecodeError, TypeError) as e:
+    except (json.JSONDecodeError, TypeError):
         return {
             "statusCode": 400,
-            "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
             "body": json.dumps({"error": "Invalid JSON request body"})
         }
 
-    # MULTI-TENANT SECURITY LOCK: 
-    # Extract client_id strictly from Authorizer context. Do NOT trust the body.
-    authorizer_ctx = event.get("requestContext", {}).get("authorizer", {})
-    client_id = authorizer_ctx.get("client_id")
-    
-    if not client_id:
-        return {
-            "statusCode": 403,
-            "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-            "body": json.dumps({"error": "Unauthorized: Tenant identity missing from authorization context."})
-        }
-
-    question = body.get("message")
+    question = body.get("message", "").strip()
 
     if not question:
         return {
             "statusCode": 400,
-            "headers": {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
             "body": json.dumps({"error": "message is required"})
         }
 
-    try:
-        # Query the RAG engine using the securely identified tenant
-        result = ask(client_id, question)
-        return {
-            "statusCode": 200,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            "body": json.dumps(result)
-        }
-    except Exception as e:
-        print("CRITICAL RAG ERROR:")
-        traceback.print_exc()
-        return {
-            "statusCode": 400,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            "body": json.dumps({
-                "error": "Failed to process chat query",
-                "details": str(e)
-            })
-        }
+    result = ask(client_id, question)
+
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        "body": json.dumps(result)
+    }

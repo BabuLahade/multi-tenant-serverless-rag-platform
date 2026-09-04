@@ -116,3 +116,42 @@ resource "aws_iam_role_policy_attachment" "data_access" {
 
   policy_arn = aws_iam_policy.lambda_data_access.arn
 }
+
+
+resource "aws_iam_role" "onboard_lambda_role" {
+  name = "nova_onboard_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = { Service = "lambda.amazonaws.com" }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "onboard_lambda_policy" {
+  name = "nova_onboard_policy"
+  role = aws_iam_role.onboard_lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = ["dynamodb:PutItem", "dynamodb:GetItem"]
+        Resource = aws_dynamodb_table.chatbot_configs.arn
+      },
+      {
+        Effect = "Allow"
+        Action = ["sqs:SendMessage"]
+        # Replace 'aws_sqs_queue.crawl_queue.arn' with the actual reference to your SQS queue in Terraform
+        Resource = aws_sqs_queue.crawl_queue.arn 
+      },
+      {
+        Effect = "Allow"
+        Action = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
+        Resource = "arn:aws:logs:*:*:*"
+      }
+    ]
+  })
+}

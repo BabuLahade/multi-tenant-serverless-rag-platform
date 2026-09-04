@@ -132,3 +132,22 @@ resource "aws_lambda_function" "authorizer" {
     mode = "Active"
   }
 }
+
+
+resource "aws_lambda_function" "nova_onboard" {
+  filename      = "../lambda/packages/nova-onboard.zip" # Make sure this matches your zip path
+  function_name = "nova-onboard"
+  role          = var.onboard_lambda_role_arn
+  handler       = "handler.handler"
+  runtime       = "python3.12"
+  
+  environment {
+    variables = {
+      CONFIGS_TABLE = aws_dynamodb_table.chatbot_configs.name
+      # Replace 'aws_sqs_queue.crawl_queue.url' with your actual SQS URL reference
+      SQS_QUEUE_URL = var.sqs_queue_url
+       
+      WIDGET_URL    = "https://babulahade.github.io/multi-tenant-serverless-rag-platform/frontend/widget.js"
+    }
+  }
+}

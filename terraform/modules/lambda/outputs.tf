@@ -29,3 +29,14 @@ output "authorizer_lambda_arn" {
 output "authorizer_lambda_name" {
   value = aws_lambda_function.authorizer.function_name
 }
+
+output "onboard_lambda_arn" {
+  value = aws_lambda_function.onboard.arn
+}
+output "onboard_lambda_invoke_arn" {
+  value = aws_lambda_function.onboard.invoke_arn
+}
+
+output "onboard_lambda_name" {
+  value = aws_lambda_function.onboard.function_name
+}
