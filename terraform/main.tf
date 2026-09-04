@@ -44,6 +44,7 @@ module "lambda" {
   lambda_role_arn  = module.iam.lambda_role_arn
   ingest_queue_arn = module.sqs.ingest_queue_arn
   sqs_queue_url = module.sqs.sqs_queue_url
+  onboard_lambda_role_arn = module.iam.onboard_lambda_role_arn
 
 }
 
@@ -65,7 +66,7 @@ module "api_gateway" {
 
   onboard_lambda_invoke_arn = module.lambda.onboard_lambda_invoke_arn
   onboard_lambda_name = module.lambda.onboard_lambda_name
-  onboard_lambda_arn = module.lambda.onboard_lambda_arn
+  # onboard_lambda_arn = module.lambda.onboard_lambda_arn
 }
 
 module "sqs" {
