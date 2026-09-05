@@ -231,7 +231,9 @@ resource "aws_iam_policy" "onboard_apigw_policy" {
       },
       {
         Action = [
-          "apigateway:POST"
+
+          "apigateway:POST" ,
+          "apigateway:GET"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:apigateway:ap-south-1::/usageplans/*/keys"

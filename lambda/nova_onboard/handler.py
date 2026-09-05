@@ -16,7 +16,7 @@ apigateway = boto3.client(
     region_name=os.environ.get("AWS_REGION", "ap-south-1")
 )
 
-USAGE_PLAN_ID = os.environ.get("USAGE_PLAN_ID", "")
+# USAGE_PLAN_ID = os.environ.get("USAGE_PLAN_ID", "")
 
 API_GATEWAY_URL = os.environ.get(
     "API_GATEWAY_URL",
@@ -32,6 +32,16 @@ WIDGET_URL = os.environ.get(
 def generate_api_key(client_id):
     unique = str(uuid.uuid4()).replace("-", "")[:24]
     return f"nova_{client_id}_{unique}"
+
+def get_usage_plan_id(plan_name="nova-basic-tier"):
+    try:
+        response = apigateway.get_usage_plans()
+        for plan in response.get('items', []):
+            if plan['name'] == plan_name:
+                return plan['id']
+    except Exception as e:
+        print(f"Failed to fetch usage plans: {e}")
+    return None
 
 
 def handler(event, context):
@@ -87,6 +97,11 @@ def handler(event, context):
 
     print(f"Created client: {client_id} with key: {api_key}")
 
+    # ==========================================
+    # NEW BLOCK: Register API Key with API Gateway
+    # ==========================================
+    USAGE_PLAN_ID = get_usage_plan_id("nova-basic-tier")
+    
     if USAGE_PLAN_ID:
         try:
             # 1. Create the API Key in AWS
@@ -108,9 +123,8 @@ def handler(event, context):
             
         except Exception as e:
             print(f"Failed to register key with API Gateway: {e}")
-            # Depending on strictness, you could return a 500 error here
     else:
-        print("WARNING: USAGE_PLAN_ID env var not set. Skipping API Gateway registration.")
+        print("WARNING: Could not find Usage Plan 'nova-basic-tier'. Skipping API Gateway registration.")
     # ==========================================
     # Trigger crawl automatically
     try:

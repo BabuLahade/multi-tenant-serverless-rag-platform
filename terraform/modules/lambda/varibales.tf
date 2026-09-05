@@ -38,6 +38,6 @@ variable "chatbot_configs_table_name" {
 #   type = string
 # }
 
-variable "usage_plan_id" {
-  type = string
-}
+# variable "usage_plan_id" {
+#   type = string
+# }
