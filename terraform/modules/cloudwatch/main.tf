@@ -6,7 +6,7 @@ resource "aws_sns_topic" "nova_alerts" {
 resource "aws_sns_topic_subscription" "email" {
   topic_arn = aws_sns_topic.nova_alerts.arn
   protocol  = "email"
-  endpoint  = "babulahade@gmail.com"
+  endpoint  = "lahadebabu@gmail.com"
 }
 
 
