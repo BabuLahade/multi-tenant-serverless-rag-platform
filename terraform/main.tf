@@ -120,3 +120,13 @@ module "github_oidc" {
   github_repo = "BabuLahade/multi-tenant-serverless-rag-platform"
 }
 
+module "cdn" {
+  source = "./modules/cdn"
+
+  providers = {
+    aws.us_east_1 = aws.us_east_1
+  }
+
+  root_domain    = "babu-lahade.online"
+  domain_aliases = ["cdn.babu-lahade.online"]
+}
