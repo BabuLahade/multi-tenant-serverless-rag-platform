@@ -239,5 +239,6 @@ def handler(event, context):
         },
         "context": {
             "client_id": client_id
-        }
+        },
+        "usageIdentifierKey": api_key
     }

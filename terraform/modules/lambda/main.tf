@@ -146,7 +146,7 @@ resource "aws_lambda_function" "nova_onboard" {
       CONFIGS_TABLE = var.chatbot_configs_table_name
       # Replace 'aws_sqs_queue.crawl_queue.url' with your actual SQS URL reference
       SQS_QUEUE_URL = var.sqs_queue_url
-       
+      USAGE_PLAN_ID = var.usage_plan_id
       WIDGET_URL    = "https://babulahade.github.io/multi-tenant-serverless-rag-platform/frontend/widget.js"
     }
   }

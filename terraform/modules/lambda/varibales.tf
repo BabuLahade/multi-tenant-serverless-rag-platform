@@ -37,3 +37,7 @@ variable "chatbot_configs_table_name" {
 # variable "sqs_queue_url" {
 #   type = string
 # }
+
+variable "usage_plan_id" {
+  type = string
+}

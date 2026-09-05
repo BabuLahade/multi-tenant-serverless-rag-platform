@@ -9,6 +9,27 @@ resource "aws_api_gateway_resource" "chat" {
 
   path_part = "chat"
 }
+# 1. Define the Global Usage Plan
+resource "aws_api_gateway_usage_plan" "nova_basic_tier" {
+  name        = "nova-basic-tier"
+  description = "Basic tier rate limits for RAG tenants"
+
+  api_stages {
+    api_id = aws_api_gateway_rest_api.rag_api.id
+    stage  = aws_api_gateway_stage.dev.stage_name
+  }
+
+  quota_settings {
+    limit  = 1000
+    offset = 0
+    period = "MONTH"
+  }
+
+  throttle_settings {
+    burst_limit = 20
+    rate_limit  = 10
+  }
+}
 
 resource "aws_api_gateway_method" "chat_post" {
 
@@ -21,6 +42,8 @@ resource "aws_api_gateway_method" "chat_post" {
   authorization = "CUSTOM"
 
   authorizer_id = aws_api_gateway_authorizer.nova.id
+
+  api_key_required = true
 }
 
 resource "aws_api_gateway_integration" "chat" {

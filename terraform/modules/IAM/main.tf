@@ -121,7 +121,7 @@ resource "aws_iam_policy" "lambda_data_access" {
           "dynamodb:PutItem",
           "dynamodb:Query",
           "dynamodb:UpdateItem",
-          "dynamodb:Scan" # Added Scan action here
+          "dynamodb:Scan" 
         ]
         Resource = [
           var.vectors_table_arn,
@@ -212,6 +212,29 @@ resource "aws_iam_role_policy" "onboard_lambda_policy" {
         Effect = "Allow"
         Action = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
         Resource = "arn:aws:logs:*:*:*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "onboard_apigw_policy" {
+  name = "nova-onboard-apigw-policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "apigateway:POST"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:apigateway:ap-south-1::/apikeys*"
+      },
+      {
+        Action = [
+          "apigateway:POST"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:apigateway:ap-south-1::/usageplans/*/keys"
       }
     ]
   })

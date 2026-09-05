@@ -11,6 +11,12 @@ dynamodb = boto3.resource(
 configs_table = dynamodb.Table(
     os.environ.get("CONFIGS_TABLE", "chatbot_configs")
 )
+apigateway = boto3.client(
+    "apigateway",
+    region_name=os.environ.get("AWS_REGION", "ap-south-1")
+)
+
+USAGE_PLAN_ID = os.environ.get("USAGE_PLAN_ID", "")
 
 API_GATEWAY_URL = os.environ.get(
     "API_GATEWAY_URL",
@@ -81,6 +87,31 @@ def handler(event, context):
 
     print(f"Created client: {client_id} with key: {api_key}")
 
+    if USAGE_PLAN_ID:
+        try:
+            # 1. Create the API Key in AWS
+            api_key_response = apigateway.create_api_key(
+                name=f"nova-tenant-{client_id}",
+                value=api_key,
+                enabled=True
+            )
+            key_id = api_key_response['id']
+            print(f"API Key registered in API Gateway with ID: {key_id}")
+
+            # 2. Attach the Key to the Usage Plan
+            apigateway.create_usage_plan_key(
+                usagePlanId=USAGE_PLAN_ID,
+                keyId=key_id,
+                keyType='API_KEY'
+            )
+            print(f"API Key attached to Usage Plan: {USAGE_PLAN_ID}")
+            
+        except Exception as e:
+            print(f"Failed to register key with API Gateway: {e}")
+            # Depending on strictness, you could return a 500 error here
+    else:
+        print("WARNING: USAGE_PLAN_ID env var not set. Skipping API Gateway registration.")
+    # ==========================================
     # Trigger crawl automatically
     try:
         sqs = boto3.client(
