@@ -48,6 +48,7 @@ module "lambda" {
   sqs_queue_url = module.sqs.sqs_queue_url
   onboard_lambda_role_arn = module.iam.onboard_lambda_role_arn
   chatbot_configs_table_name = module.dynamodb.chatbot_configs_table_name
+  usage_plan_id = module.api_gateway.usage_plan_id
 
 }
 
