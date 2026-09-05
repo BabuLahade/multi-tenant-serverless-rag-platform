@@ -26,8 +26,8 @@ resource "aws_api_gateway_usage_plan" "nova_basic_tier" {
   }
 
   throttle_settings {
-    burst_limit = 20
-    rate_limit  = 10
+    burst_limit = 2
+    rate_limit  = 1
   }
 }
 

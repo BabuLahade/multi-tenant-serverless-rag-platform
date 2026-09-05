@@ -708,4 +708,16 @@ def handler(event, context):
     except Exception as e:
         # 3. Track errors per tenant
         log_tenant_metric(client_id, "Errors", 1, "Count")
+        
+        error_msg = str(e)
+        if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
+            return {
+                "statusCode": 429,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+                "body": json.dumps({"error": "AI provider rate limit exceeded. Please wait 60 seconds and try again."})
+            }
+            
         raise e
