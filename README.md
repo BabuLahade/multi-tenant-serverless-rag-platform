@@ -30,7 +30,7 @@ The platform enforces strict tenant isolation at every layer: each client's know
 ## Architecture
                      ┌─────────────────────────────────────────┐
                      │           INGESTION PIPELINE             │
-                     │                                          │
+                    │                                          │
 POST /crawl │ nova-crawl S3 SQS │
 ─────────────► API GW ─► Lambda ──► Bucket ──► Queue ──► │
 │ │ DLQ │
