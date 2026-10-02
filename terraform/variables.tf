@@ -17,3 +17,9 @@ variable "gemini_api_key" {
   type      = string
   sensitive = true
 }
+
+variable "tenant_domains" {
+  description = "List of all subdomains to be attached to the CloudFront distribution"
+  type        = list(string)
+  default     = []
+}

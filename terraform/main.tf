@@ -128,5 +128,6 @@ module "cdn" {
   }
 
   root_domain    = "babu-lahade.online"
-  domain_aliases = ["cdn.babu-lahade.online"]
+  domain_aliases = var.tenant_domains
+
 }

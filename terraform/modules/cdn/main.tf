@@ -13,11 +13,11 @@ variable "root_domain" {
   description = "Base domain name"
 }
 
-variable "domain_aliases" {
-  type        = list(string)
-  default     = ["cdn.babu-lahade.online"]
-  description = "Subdomains pointing to CloudFront"
-}
+# variable "domain_aliases" {
+#   type        = list(string)
+#   default     = ["cdn.babu-lahade.online"]
+#   description = "Subdomains pointing to CloudFront"
+# }
 
 # 1. Request Wildcard ACM Certificate in us-east-1
 resource "aws_acm_certificate" "wildcard" {
